@@ -1,0 +1,102 @@
+name: Docker Build and Push
+
+on:
+  push:
+    tags:
+      - '*'  # сборка производится только при наличии тега
+    branches:
+      - main  # измените на вашу основную ветку
+      - development
+      - feature/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.ref, 'refs/tags/') || github.event_name == 'push' }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker-compose -p test-build -f compose-dev.yaml build
+
+  deploy:
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set short SHA
+        id: vars
+        run: |
+          echo "COMMIT_SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+          apt update && apt install tr
+          echo "TAG=$(echo ${{ github.ref_name }} | tr '.-' '_')" >> $GITHUB_ENV
+
+      - name: Install SSH client
+        run: sudo apt-get install -y openssh-client  # Устанавливаем SSH клиент
+
+      - name: Deploy code via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          source: "."
+          target: "/opt/chess/${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}/"
+
+      - name: SSH Command Execution
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_SSH_PORT }}
+          script: |
+            full_path_current=$(readlink -f "/opt/chess/current");
+            full_path_pre_current=$(readlink -f "/opt/chess/pre-current");
+            full_path_new_version=$(readlink -f "/opt/chess/${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}");
+            export RELEASE_NAME="${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}";
+
+            # Начать сборку нового релиза
+            cd $full_path_new_version;
+            echo "${{ secrets.APP_ENV }}" > .env;
+            echo "COMMIT_SHA=${{ env.COMMIT_SHORT_SHA }}" >> .env;
+            docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml build;
+
+            # Остановить текущий релиз
+            cd $full_path_current;
+            docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml stop;
+
+            # Запустить новый релиз
+            cd $full_path_new_version;
+            docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml up -d;
+            
+            # Проверка запущены ли контейнеры
+            sleep 10;
+
+            # Получаем количество всех контейнеров
+            total_containers=$(docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml ps --services | wc -l)
+
+            # Получаем количество запущенных контейнеров
+            running_containers=$(docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml ps --services --filter "status=running" | wc -l)
+
+            # Проверяем, запущены ли все контейнеры
+            if [ "$total_containers" -eq "$running_containers" ]; then
+              cd /opt/chess;
+              # Меняем ссылку pre-current на предыдущую версию
+              ln -sf $full_path_current pre-current;
+
+              # Меняем ссылку current на последнюю версию
+              ln -sf $full_path_new_version current;
+
+              echo "[Success]: Deploy sucessfully";
+            else
+              echo "[Failed]: Deploy failed"
+              cd $full_path_current;
+              docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml up -d;
+              echo "[Success]: Started the previous release"
+            fi
