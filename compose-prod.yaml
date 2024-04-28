@@ -36,7 +36,6 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
-    container_name: redis
     image: bitnami/redis:7.0.15
     restart: always
     environment:

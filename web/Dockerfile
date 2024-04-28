@@ -18,7 +18,7 @@ FROM nginx
 
 COPY --from=node_builder /web/dist/ /var/www/chessautochess5/
 
-COPY nginx.conf /etc/nginx/conf.d/vue.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

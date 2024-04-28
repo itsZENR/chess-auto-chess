@@ -63,6 +63,7 @@ jobs:
 
             # Начать сборку нового релиза
             cd $full_path_new_version;
+            rm -rf $RELEASE_NAME || true;
             echo "${{ secrets.APP_ENV }}" > .env;
             echo "COMMIT_SHA=${{ env.COMMIT_SHORT_SHA }}" >> .env;
             docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml build;
@@ -88,9 +89,11 @@ jobs:
             if [ "$total_containers" -eq "$running_containers" ]; then
               cd /opt/chess;
               # Меняем ссылку pre-current на предыдущую версию
+              rm -rf pre-current;
               ln -sf $full_path_current pre-current;
 
               # Меняем ссылку current на последнюю версию
+              rm -rf current;
               ln -sf $full_path_new_version current;
 
               echo "[Success]: Deploy sucessfully";
