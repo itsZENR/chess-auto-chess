@@ -1,0 +1,20 @@
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 #2f2e2e;
+}
+
+/* Цвет заполнения скроллбара */
+::-webkit-scrollbar-thumb {
+    background-color: #888; /* Цвет заполнения */
+    border-radius: 6px; /* Скругление углов */
+}
+
+/* Цвет фона скроллбара */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Цвет фона */
+}
+
+/* Цвет кнопок прокрутки */
+::-webkit-scrollbar-button {
+    background-color: #555; /* Цвет кнопок */
+}

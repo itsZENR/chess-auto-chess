@@ -1,0 +1,11 @@
+.git/
+# Игнорировать файлы и папки для проекта Vue.js
+/node_modules/
+/dist/
+
+# Игнорировать временные файлы IDE для Visual Studio Code
+.vscode/
+
+# Игнорировать временные файлы IDE для PyCharm
+.idea/
+*.iml

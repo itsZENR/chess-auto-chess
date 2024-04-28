@@ -1,0 +1,18 @@
+.git/
+
+# Игнорировать файлы и папки для проекта Django
+/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.pyc
+.venv
+venv
+
+# Игнорировать временные файлы IDE для Visual Studio Code
+.vscode/
+
+# Игнорировать временные файлы IDE для PyCharm
+.idea/
+*.iml

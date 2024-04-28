@@ -1,0 +1,25 @@
+:root {
+    --main-grey-bg: #D9D9D9;
+    --grey-bg: #F6F6F6;
+    --grey-1: #BCBEC3;
+    --black-1: #323232;
+    --main-blue: #123785;
+    --blue-1: #142E64;
+    --error-red: #D21111;
+    --alert-red: #F04949;
+    --warning-yellow: #F0EA53;
+    --okay-green: #71DA67;
+    --base-transition: all 0.2s ease;
+
+    --dropdown-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.4);
+    --dropdown-input-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    --dropdown-btn-active-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+
+    --main-front-family: "Roboto", sans-serif;
+    --main-bg-color: #1f1f1f;
+    --main-color: #fff;
+    --color-active: #f7e2d8;
+    --color-blue: #3498db;
+    --color-red: red;
+    --font-size-12: calc(12px + 0 * ((100vw - 320px) / (1920 - 320)));
+}
