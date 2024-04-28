@@ -22,3 +22,6 @@ __pycache__/
 # Игнорировать временные файлы IDE для PyCharm
 .idea/
 *.iml
+
+venv
+.venv
