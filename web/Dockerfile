@@ -2,12 +2,13 @@ FROM node:20.12.2 AS node_builder
 
 WORKDIR /web
 
-COPY web/package.json package.json
-COPY web/package-lock.json package-lock.json
+COPY package.json package.json
+COPY package-lock.json package-lock.json
 
-RUN npm install --package-lock-only
+RUN npm install 
+# --package-lock-only
 
-COPY web/ .
+COPY . .
 
 RUN npm run build
 
