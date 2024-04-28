@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: Frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+  django:
+    build:
+      context: Backend/ChessAutoChess/
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - redis
+
+  # fastapi:
+  #   build:
+  #     context: .
+  #     dockerfile: backend/Dockerfile
+  #   depends_on:
+  #     - postgres
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+      POSTGRES_DB: your_database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+
+volumes:
+  postgres_data:

@@ -1,0 +1,24 @@
+# Игнорировать файлы и папки для проекта Vue.js
+/node_modules/
+/dist/
+
+# Игнорировать файлы и папки для проекта Django
+/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.pyc
+
+# Игнорировать файлы и папки для проекта FastAPI
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Игнорировать временные файлы IDE для Visual Studio Code
+.vscode/
+
+# Игнорировать временные файлы IDE для PyCharm
+.idea/
+*.iml

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  harbor:
+    container_name: harbor
+    image: bitnami/harbor-registry:2.10.2
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      # - /opt/harbor/data:/data
+      - harbor_data:/var/lib/registry
+      - ./config.yaml:/etc/registry/config.yml
+    environment:
+      - HARBOR_ADMIN_PASSWORD=password
+      - HARBOR_ADMIN_PASSWORD_RESET=password
+
+  redis:
+    container_name: harbor-redis
+    image: bitnami/redis:7.0.15
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+  
+  # postgresql:
+  #   container_name: harbor-postgresql
+  #   image: bitnami/redis:7.0.15
+  #   restart: always
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #   volumes:
+  #     - harbor_postgresql_data:/data
+      
+
+volumes:
+  harbor_data:
