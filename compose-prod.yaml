@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   web:
+    image: ${RELEASE_NAME}-web
     build:
       context: web/
       dockerfile: Dockerfile
@@ -11,6 +12,7 @@ services:
       - django
 
   django:
+    image: ${RELEASE_NAME}-django
     build:
       context: app/
       dockerfile: Dockerfile
@@ -19,6 +21,11 @@ services:
       - redis
 
   migrate:
+    image: ${RELEASE_NAME}-migrate
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
     build:
       context: app/
       dockerfile: Dockerfile
