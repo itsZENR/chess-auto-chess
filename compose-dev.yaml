@@ -29,7 +29,7 @@ services:
     depends_on:
       - postgres
   
-  create superuser:
+  create_superuser:
     build:
       context: app/
       dockerfile: Dockerfile
