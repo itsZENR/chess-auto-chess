@@ -14,8 +14,8 @@ services:
     build:
       context: app/
       dockerfile: Dockerfile
-    # depends_on:
-    #   - postgres
+    depends_on:
+      - postgres
       # - redis
 
   # fastapi:
@@ -25,17 +25,17 @@ services:
   #   depends_on:
   #     - postgres
 
-  # postgres:
-  #   image: postgres:15
-  #   environment:
-  #     POSTGRES_USER: your_username
-  #     POSTGRES_PASSWORD: your_password
-  #     POSTGRES_DB: your_database
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   # redis:
   #   image: redis:latest
 
-# volumes:
-#   postgres_data:
+volumes:
+  postgres_data: null
