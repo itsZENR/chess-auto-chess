@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  nginx:
+  web:
     build:
       context: web/
       dockerfile: Dockerfile
@@ -15,27 +15,55 @@ services:
       context: app/
       dockerfile: Dockerfile
     depends_on:
+      - migrate
+
+  migrate:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: root
+      DJANGO_SUPERUSER_USERNAME: root
+      DJANGO_SUPERUSER_EMAIL: root@mail.ru
+    command: python ./manage.py migrate && python ./manage.py createsuperuser --noinput
+    depends_on:
       - postgres
-      # - redis
+  
+  create superuser:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: root
+      DJANGO_SUPERUSER_USERNAME: root
+      DJANGO_SUPERUSER_EMAIL: root@mail.ru
+    command: python ./manage.py createsuperuser --noinput || true
+    depends_on:
+      - migrate
+      - postgres
 
   # fastapi:
   #   build:
-  #     context: .
-  #     dockerfile: backend/Dockerfile
+  #     context: fastapi/
+  #     dockerfile: Dockerfile
   #   depends_on:
   #     - postgres
 
   postgres:
     image: postgres:15
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: chess
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # redis:
-  #   image: redis:latest
+  redis:
+    image: bitnami/redis:7.0.15
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
 
 volumes:
-  postgres_data: null
+  postgres_data:

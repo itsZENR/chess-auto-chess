@@ -1,6 +1,0 @@
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Additional step
-        run: echo "This is an additional step"
