@@ -21,12 +21,13 @@ services:
     build:
       context: app/
       dockerfile: Dockerfile
-    command: python ./manage.py migrate
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: root
+      DJANGO_SUPERUSER_USERNAME: root
+      DJANGO_SUPERUSER_EMAIL: root@mail.ru
+    command: python ./manage.py migrate && python ./manage.py createsuperuser --noinput
     depends_on:
       - postgres
-    # depends_on:
-    #   - postgres
-      # - redis
 
   # fastapi:
   #   build:

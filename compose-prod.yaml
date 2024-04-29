@@ -18,6 +18,14 @@ services:
       - postgres
       - redis
 
+  migrate:
+    build:
+      context: app/
+      dockerfile: Dockerfile
+    command: python ./manage.py migrate
+    depends_on:
+      - postgres
+
   # fastapi:
   #   build:
   #     context: fastapi/
