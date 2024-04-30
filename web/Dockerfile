@@ -5,7 +5,7 @@ WORKDIR /web
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
-RUN yarn install --no-cache --mutex network-concurrency:4
+RUN yarn install --no-cache --mutex network:4
 # --package-lock-only
 
 COPY . .
