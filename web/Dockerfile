@@ -1,18 +1,18 @@
 FROM node:20.12.2 AS node_builder
 
+ENV VUE_APP_NODE_ENV=production
+
 WORKDIR /web
 
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
-RUN yarn install --no-cache --mutex network:4
+RUN yarn install --no-cache -p
 # --package-lock-only
 
 COPY . .
 
 RUN yarn run build-prod
-
-
 
 FROM nginx
 
