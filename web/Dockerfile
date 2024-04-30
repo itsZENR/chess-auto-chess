@@ -3,7 +3,7 @@ FROM node:20.12.2 AS node_builder
 WORKDIR /web
 
 COPY package.json package.json
-COPY package-lock.json package-lock.json
+COPY yarn.lock yarn.lock
 
 RUN yarn install
 # --package-lock-only
