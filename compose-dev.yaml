@@ -37,7 +37,7 @@ services:
       DJANGO_SUPERUSER_PASSWORD: root
       DJANGO_SUPERUSER_USERNAME: root
       DJANGO_SUPERUSER_EMAIL: root@mail.ru
-    command: python ./manage.py createsuperuser --noinput || true
+    command: python ./manage.py createsuperuser --noinput | true
     depends_on:
       - migrate
       - postgres
