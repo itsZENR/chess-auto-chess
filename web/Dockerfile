@@ -5,12 +5,12 @@ WORKDIR /web
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 
-RUN npm install 
+RUN yarn install
 # --package-lock-only
 
 COPY . .
 
-RUN npm run build
+RUN yarn run build-prod
 
 
 
