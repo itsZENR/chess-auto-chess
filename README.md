@@ -1,4 +1,2 @@
 # ChessAutoChess
-Django5+FastAPI+Vue.js
-
-ТОП САЙТ
+Django5+DRF+Swagger+Vue.js
