@@ -1,0 +1,82 @@
+:root {
+    --mainFrontFamily: "Roboto", sans-serif;
+    --container: 1228px;
+    --main-bg-color: #1f1f1f;
+    --main-color: #fff;
+    --color-active: #f7e2d8;
+    --color-blue: #3498db;
+    --color-red: red;
+    --font-size-12: calc(12px + 0 * ((100vw - 320px) / (1920 - 320)));
+}
+
+body {
+    color: var(--main-color);
+    font-family: var(--mainFrontFamily);
+}
+
+._container {
+    max-width: var(--container);
+    margin: 0px auto;
+    padding: 0px 10px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: calc(20px + 8 * ((100vw - 320px) / (1920 - 320)));
+    line-height: 133%;
+    margin-bottom: 20px;
+}
+
+.label {
+    font-weight: 600;
+    font-size: calc(18px + 6 * ((100vw - 320px) / (1920 - 320)));
+    text-align: center;
+    line-height: 133%;
+}
+
+.text {
+    font-weight: 400;
+    font-size: calc(16px + 2 * ((100vw - 320px) / (1920 - 320)));
+    text-align: center;
+    line-height: 133%;
+}
+
+.padding {
+    padding-top: calc(20px + 20 * ((100vw - 320px) / (1920 - 320)));
+    padding-bottom: calc(20px + 20 * ((100vw - 320px) / (1920 - 320)));
+}
+
+.btn {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+    padding: 0px 15px;
+    background-color: hsla(0, 0%, 100%, 0.08);
+    color: var(--main-color);
+    border: none;
+    transition: all 0.3s ease 0s;
+}
+.btn:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease 0s;
+}
+
+.margin-top {
+    margin-top: 15px;
+}
+.margin-bottom {
+    margin-bottom: 15px;
+}
+@media (max-width: 1228px) {
+    .padding {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    ._container {
+        
+    }
+}
