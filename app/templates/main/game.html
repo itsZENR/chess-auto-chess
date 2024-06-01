@@ -1,0 +1,45 @@
+<!--{% extends 'main/base.html' %}-->
+{% load static %}
+
+{% block extrahead %}
+<!-- Chess -->
+<link rel="stylesheet" href="{% static 'css/chessboard-1.0.0.min.css' %}">
+<!-- Chess -->
+<link rel="stylesheet" href="{% static 'css/game.css' %}">
+{% endblock %}
+
+{% block title %}
+Игра
+{% endblock %}
+
+{% block content %}
+<div class="board">
+	<div class="board__content">
+		<div id="myBoard" class="board__game"></div>
+		<div class="board__action">
+
+			<div class="board__figures">
+
+			</div>
+			<div class="board__buttons">
+				<button type='submit' class='board__button btn'>Создать игру</button>
+				<button type='submit' class='board__button board-save btn'>Сохранить</button>
+				<button type='submit' class='board__button board-clear btn'>Очистить</button>
+				<!-- <button type='submit' class='board__button board-cancel btn'>Отмена</button> -->
+			</div>
+			<div class="board__points label">
+				<span><strong>10</strong> point </span>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrafooter %}
+<!-- Chess -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="{% static 'js/chessboard-1.0.0.min.js' %}"></script>
+<script src="{% static 'js/gameChess.js' %}"></script>
+<!-- Chess -->
+
+{% endblock %}

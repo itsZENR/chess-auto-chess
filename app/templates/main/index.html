@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block title %}
+Главная
+{% endblock %}
+
+{% block content %}
+<section class="main">
+    <div class="main__content padding _container">
+        <div class="main__title title">
+            <h1>Главная</h1>
+        </div>
+    </div>
+</section>
+{% endblock %}

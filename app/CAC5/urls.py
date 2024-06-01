@@ -17,9 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ChessAutoChess import views
+from rest_framework.routers import SimpleRouter
+
+router = SimpleRouter()
+
+router.register('api/users', views.UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
+    path('game_test/', views.index, name='home'),
 
 ]
+
+urlpatterns += router.urls
