@@ -6,7 +6,7 @@ export function useFunctionsChess() {
     }
 
     // Функция на проверку передвижение фигуры
-    function checkTargetRow(target, piece, orientation) {
+    function isTargetRow(target, piece, orientation) {
         const targetRow = parseInt(target.charAt(1), 10);
         const targetColor = piece.charAt(0);
 
@@ -28,38 +28,56 @@ export function useFunctionsChess() {
     }
 
     // Функция на проверку занятости ячейки
-    function checkExistingPiece(target, board) {
+    function isExistingPiece(target, board) {
         // Получаем элемент на целевой клетке
         const targetPiece = board.position()[target];
         return !!targetPiece;
     }
 
-    // Функция срабатывает после отпуска фигуры
-    function onDrop(source, target, piece, newPos, oldPos, orientation) {
-        // Если игры начата, запрещаем двиграть фигуры
-        if (gameStatus) {
-            return snapbackMove();
+    // Функция на проверку количество очков у черного и белого
+    function isEnoughPoints(piece, pieceValue, whitePoints, blackPoints) {
+        // Получаем тип фигуры
+        let pieceType = piece.charAt(1);
+        let pieceVal = pieceValue[pieceType]; // Получаем значение фигуры из объекта pieceValue
+
+        if (whitePoints - pieceVal < 0) {
+            console.log("Недостаточно очков для добавления фигуры.");
+            return true;
+        }
+        if (blackPoints - pieceVal < 0) {
+            console.log("Недостаточно очков для добавления фигуры.");
+            return true;
+        }
+    }
+
+    function counterPointsForPiece(pieceValue, points, pieceType, source, target) {
+        // Очки игрока
+        let totalPoints = Number(points);
+
+        // Получаем тип фигуры
+        pieceType = pieceType.charAt(1);
+        let pieceVal = pieceValue[pieceType]; // Получаем значение фигуры
+
+        if (target === "offboard") {
+            totalPoints += pieceVal;
+            return totalPoints;
         }
 
-        if (target === "offboard" && source === "spare") {
-            return snapbackMove();
+        if (source === "spare") {
+            totalPoints -= pieceVal; // Вычитаем очки за фигуру
+            return totalPoints;
+        } else {
+            return totalPoints;
         }
-
-        // Проверка для короля
-        if (target === "offboard" && piece.charAt(1) === "K") {
-            return snapbackMove();
-        }
-
-        if (checkTargetRow(target, piece, orientation)) {
-            return snapbackMove();
-        }
-
-        if (checkExistingPiece(target, board)) {
-            return snapbackMove();
-        }
-
 
     }
 
-    return {onDrop}
+    function playPlacementSound(soundStep) {
+        const audio = soundStep;
+        audio.volume = 0.1;
+        audio.play();
+    }
+
+
+    return {snapbackMove, isTargetRow, isExistingPiece, isEnoughPoints, counterPointsForPiece, playPlacementSound}
 }
