@@ -1,4 +1,7 @@
-from rest_framework.serializers import ModelSerializer 
+'''
+Сериализует запрос из БД в json
+'''
+from rest_framework.serializers import ModelSerializer
 
 from django.contrib.auth.models import User
 
