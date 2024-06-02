@@ -8,22 +8,26 @@
       Игрок 2
     </base-text>
   </v-col>
+  <audio ref="soundStep">
+    <source :src="soundSrc" type="audio/mpeg">
+  </audio>
 </template>
 
 <script setup>
-import "@/assets/js/chessboard-1.0.0.min"
+import "@/assets/js/chessboard-1.0.0.min";
 import {onMounted, ref} from 'vue';
 import BaseText from "@/components/ui/BaseText";
 import {useSettingChess} from "@/components/composable/useSettingChess";
+import soundPath from '@/assets/sound/moveStep.mp3';
 
-
-const board = ref(null)
-const {config} = useSettingChess()
+const board = ref(null);
+const soundStep = ref(null);
+const gameStatus = ref(false);
+const soundSrc = soundPath;
 
 onMounted(() => {
-  Chessboard(board.value, config)
-})
-
+  useSettingChess(board.value, soundStep.value, gameStatus.value);
+});
 
 </script>
 
