@@ -1,25 +1,10 @@
-import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
+import {useLogicChess} from "@/components/composable/useLogicChess";
+import {ref} from "vue";
 
-export function useSettingChess() {
+export function useSettingChess(board, soundStep, gameStatus) {
 
-    // Статус игры
-    let gameStatus = false;
-
-    // Очки фигур
-    const pieceValue = {
-        P: 1, // пешка
-        N: 3, // конь
-        B: 3, // слон
-        R: 5, // ладья
-        Q: 9, // ферзь
-        p: 1, // пешка
-        n: 3, // конь
-        b: 3, // слон
-        r: 5, // ладья
-        q: 9, // ферзь
-    };
-
-    const {onDrop} = useFunctionsChess()
+    const whitePoints = ref(10);
+    const blackPoints = ref(10);
 
     // Формирование доски
     const config = {
@@ -29,6 +14,14 @@ export function useSettingChess() {
         sparePieces: true,
         onDrop: onDrop,
     };
+
+    board.value = Chessboard(board, config)
+
+    // Функция срабатывает после отпуска фигуры
+    function onDrop(source, target, piece, newPos, oldPos, orientation) {
+        return useLogicChess(board.value, soundStep, gameStatus, whitePoints, blackPoints, source, target, piece, newPos, oldPos, orientation)
+    }
+
 
     return {config};
 }
