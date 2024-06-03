@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from rest_framework.viewsets import ModelViewSet
+from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
 
 
@@ -17,18 +18,31 @@ def index(request):
     '''
     username = request.META['REMOTE_ADDR']
     user = authenticate(username=username, password='mypassword')
-    if user is not None:
-        # return HttpResponse(USERNAME)
-        # return render(request, "game.html", {"room_name": game.pk})
-        return render(request, "game.html")
-    else:
+    # if user is not None:
+    #     # return HttpResponse(USERNAME)
+    #     # return render(request, "game.html", {"room_name": game.pk})
+    #     return render(request, "game.html")
+    # else:
+    #     user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
+
+    #     # Обновите поля и сохраните их снова
+    #     user.first_name = 'John'
+    #     user.last_name = 'Citizen'
+    #     user.save()
+    #     return render(request, "game.html")
+    if user in None:
         user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
 
         # Обновите поля и сохраните их снова
         user.first_name = 'John'
         user.last_name = 'Citizen'
         user.save()
-        return render(request, "game.html")
+
+    game = Game(white_player=request.user, black_player=request.user)
+    game.save()
+    return render(request, "game/game.html", {"room_name": game.pk})
+
+
 
 # @login_required
 # def index(request):
