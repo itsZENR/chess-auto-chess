@@ -19,18 +19,16 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-from ChessAutoChess import views
+from ChessAutoChess.views import UserView, index
 
 
 router = SimpleRouter()
 
-router.register('api/users', views.UserView)
+router.register('api/users', UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', views.index, name='auth'),
-    path('game_test/', views.index, name='home'),
-
+    path('auth/', index, name='auth'),
 ]
 
 urlpatterns += router.urls

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ChessAutoChess',
     'django.contrib.postgres',
     'drf_spectacular',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -65,13 +66,24 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
+# Конфигурация Channels
+ASGI_APPLICATION = "olympia.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [CHANNEL_REDIS_HOST],
+            "symmetric_encryption_keys": [SECRET_KEY],
+        },
+    },
+}
+
 ROOT_URLCONF = 'CAC5.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
