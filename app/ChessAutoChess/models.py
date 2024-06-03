@@ -1,3 +1,7 @@
+'''
+Таблица сессии с двумя внешними ключами первого и второго игрока
+'''
+
 from django.db import models
 from django.contrib.auth.models import User
 
