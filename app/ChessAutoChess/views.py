@@ -2,7 +2,7 @@
 Логика endpoint'ов на сранице игры
 '''
 from django.shortcuts import render
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -30,7 +30,7 @@ def index(request):
     #     user.last_name = 'Citizen'
     #     user.save()
     #     return render(request, "game.html")
-    if user in None:
+    if user is None:
         user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
 
         # Обновите поля и сохраните их снова
@@ -40,8 +40,8 @@ def index(request):
 
     game = Game(white_player=request.user, black_player=request.user)
     game.save()
+    return HttpResponse('USERNAME')
     # return render(request, "game/game.html", {"room_name": game.pk})
-
 
 
 # @login_required

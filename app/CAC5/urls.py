@@ -28,7 +28,7 @@ router.register('api/users', views.UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='home'),
+    path('auth/', views.index, name='auth'),
     path('game_test/', views.index, name='home'),
 
 ]
