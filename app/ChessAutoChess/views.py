@@ -40,7 +40,7 @@ def index(request):
 
     game = Game(white_player=request.user, black_player=request.user)
     game.save()
-    return render(request, "game/game.html", {"room_name": game.pk})
+    # return render(request, "game/game.html", {"room_name": game.pk})
 
 
 
