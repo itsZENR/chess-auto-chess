@@ -25,7 +25,7 @@ services:
       DJANGO_SUPERUSER_PASSWORD: root
       DJANGO_SUPERUSER_USERNAME: root
       DJANGO_SUPERUSER_EMAIL: root@mail.ru
-    command: python ./manage.py makemigrations migrate
+    command: python ./manage.py makemigrations && python ./manage.py migrate
     depends_on:
       - postgres
   
@@ -56,11 +56,15 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: chess
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: bitnami/redis:7.0.15
+    # ports:
+    #   - "6379:6379"
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
