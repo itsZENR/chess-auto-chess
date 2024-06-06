@@ -4,7 +4,6 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 import chess
 import chess.engine
-import icecream
 from icecream import ic
 from .models import Game
 import time
@@ -36,8 +35,8 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.board.set_piece_at(chess.A1, chess.Piece(chess.KING, chess.WHITE))
 
         self.engine = chess.engine.SimpleEngine.popen_uci(
-            "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-            # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
+            # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
+            "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"

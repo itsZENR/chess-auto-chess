@@ -2,7 +2,7 @@
 Логика endpoint'ов на сранице игры
 '''
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 # from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
@@ -12,7 +12,7 @@ from ChessAutoChess.serializers import UserSerializer
 
 
 
-def index(request):
+def auth(request):
     '''
     Аворизация и регистрация пользователя по IP
     '''
@@ -26,17 +26,39 @@ def index(request):
         user.first_name = 'John'
         user.last_name = 'Citizen'
         user.save()
+        return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
 
-    game = Game(white_player=request.user, black_player=request.user)
-    game.save()
-    return HttpResponse('USERNAME')
+
+    #         return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
+    #     else:
+    #         return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
+    # else:
+    #     return JsonResponse({'status': 'error', 'message': 'Forbidden IP address'}, status=403)
+
+    return JsonResponse(
+        {'status': 'success',
+          'message': 'Authenticated successfully'})
     # return render(request, "game/game.html", {"room_name": game.pk})
 
 
-def room(request, room_name):
-    return render(request, 'chat/room.html', {
-        'room_name': room_name
-    })
+def room(request):
+    '''
+    Создание комнаты
+    '''
+    game = Game(white_player=request.user, black_player=request.user)
+    game.save()
+    return JsonResponse(
+        {'status': 'success',
+         'message': 'Create successfully', 
+         'room_name': game.pk})
+
+
+# def room(request, room_name):
+#     return render(request, 'chat/room.html', {
+#         'room_name': room_name
+#     })
 
 class UserView(ModelViewSet):
     '''
