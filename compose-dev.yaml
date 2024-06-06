@@ -16,6 +16,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - migrate
+      - redis
 
   migrate:
     build:
