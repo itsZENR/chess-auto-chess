@@ -6,7 +6,7 @@
 
 <script setup>
 // Components
-import HelloWorld from '../components/HelloWorld.vue';
+import HelloWorld from '../components/MainPage.vue';
 
 
 </script>
