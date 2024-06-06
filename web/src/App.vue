@@ -9,12 +9,11 @@
 </template>
 
 <script setup>
-import {computed, onMounted} from "vue";
+import {computed} from "vue";
 import {useRoute} from "vue-router";
 
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
-import {getUsers} from "@/api";
 
 
 const route = useRoute();
@@ -36,10 +35,6 @@ const layoutComponent = computed(() => {
       }
     });
 
-onMounted(async () => {
-  const listUsers = await getUsers()
-  console.log("Все пользователи", listUsers)
-})
 
 </script>
 

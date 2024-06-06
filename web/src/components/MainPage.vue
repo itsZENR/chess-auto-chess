@@ -12,6 +12,7 @@ import BaseButton from "@/components/ui/BaseButton";
 
 function routerPush() {
   router.push("/game")
+  // TODO отправка post запроса на создание комнаты
 }
 
 </script>
