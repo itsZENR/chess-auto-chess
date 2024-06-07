@@ -16,19 +16,33 @@ def auth(request):
     '''
     Аворизация и регистрация пользователя по IP
     '''
-    username = request.META['REMOTE_ADDR']
-    user = authenticate(username=username, password='mypassword')
+    # username = request.META['REMOTE_ADDR']
+    ip = ''
+    return JsonResponse(
+        {'HTTP_X_FORWARDED_FOR': request.META.get('HTTP_X_FORWARDED_FOR'),
+         'HOST': request.META.get('HOST')})
+
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    user = authenticate(username=ip, password='mypassword')
 
     if user is None:
-        user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
+        user = User.objects.create_user(ip, 'myemail@crazymail.com', 'mypassword')
 
         # Обновите поля и сохраните их снова
         user.first_name = 'John'
         user.last_name = 'Citizen'
         user.save()
-        return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
+        return JsonResponse(
+            {'status': 'success',
+             'message': 'Authenticated successfully, user was not found and was registered'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
+        return JsonResponse(
+            {'status': 'success',
+             'message': 'Authentication successfully, user found'})
 
 
     #         return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
