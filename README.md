@@ -1,2 +1,2 @@
 # ChessAutoChess
-Django5+DRF+Swagger+Vue.js
+Django5+DRF+drf-spectacular+Vue.js
