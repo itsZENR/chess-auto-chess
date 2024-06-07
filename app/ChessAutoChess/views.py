@@ -16,21 +16,11 @@ def auth(request):
     '''
     Аворизация и регистрация пользователя по IP
     '''
-    # username = request.META['REMOTE_ADDR']
-    ip = ''
-    return JsonResponse(
-        {'HTTP_X_FORWARDED_FOR': request.META.get('HTTP_X_FORWARDED_FOR'),
-         'HOST': request.META.get('HOST')})
-
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    user = authenticate(username=ip, password='mypassword')
+    username = request.META['REMOTE_ADDR']
+    user = authenticate(username=username, password='mypassword')
 
     if user is None:
-        user = User.objects.create_user(ip, 'myemail@crazymail.com', 'mypassword')
+        user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
 
         # Обновите поля и сохраните их снова
         user.first_name = 'John'
@@ -45,18 +35,6 @@ def auth(request):
              'message': 'Authentication successfully, user found'})
 
 
-    #         return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
-    #     else:
-    #         return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
-    # else:
-    #     return JsonResponse({'status': 'error', 'message': 'Forbidden IP address'}, status=403)
-
-    return JsonResponse(
-        {'status': 'success',
-          'message': 'Authenticated successfully'})
-    # return render(request, "game/game.html", {"room_name": game.pk})
-
-
 def room(request):
     '''
     Создание комнаты
@@ -69,15 +47,9 @@ def room(request):
          'room_name': game.pk})
 
 
-# def room(request, room_name):
-#     return render(request, 'chat/room.html', {
-#         'room_name': room_name
-#     })
-
 class UserView(ModelViewSet):
     '''
     endpoint: 
     '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
