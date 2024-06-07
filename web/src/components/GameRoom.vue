@@ -1,5 +1,6 @@
 <template>
   <v-row class="justify-center">
+    <game-room-popap/>
     <game-room-board
         :isReady="isReady"
     />
@@ -10,11 +11,12 @@
 </template>
 
 <script setup>
-import GameRoomTable from "@/components/GameRoomTable";
-import GameRoomBoard from "@/components/GameRoomBoard";
+import {ref} from "vue";
 import {connectWebsocket} from "@/api/websocket";
 import {onBeforeRouteLeave} from "vue-router";
-import {ref} from "vue";
+import GameRoomBoard from "@/components/GameRoomBoard";
+import GameRoomTable from "@/components/GameRoomTable";
+import GameRoomPopap from "@/components/GameRoomPopap";
 
 
 const {ws} = connectWebsocket()
