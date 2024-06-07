@@ -20,6 +20,12 @@ import BaseText from "@/components/ui/BaseText";
 import {useSettingChess} from "@/components/composable/useSettingChess";
 import soundPath from '@/assets/sound/moveStep.mp3';
 
+
+defineProps({
+  isReady: Boolean
+})
+
+
 const board = ref(null);
 const soundStep = ref(null);
 const gameStatus = ref(false);

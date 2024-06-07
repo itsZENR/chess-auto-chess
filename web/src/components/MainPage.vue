@@ -9,10 +9,16 @@
 <script setup>
 import router from "@/router";
 import BaseButton from "@/components/ui/BaseButton";
+import {createRoom} from "@/api";
+import {ref} from "vue";
 
-function routerPush() {
-  router.push("/game")
-  // TODO отправка post запроса на создание комнаты
+
+const idRoom = ref()
+
+async function routerPush() {
+  await router.push("/game")
+  idRoom.value = await createRoom()
+  console.log("idRoom", idRoom.value)
 }
 
 </script>

@@ -58,6 +58,9 @@ import BaseText from "@/components/ui/BaseText"
 import {ref} from "vue";
 
 
+const emit = defineEmits(['clickReady'])
+
+
 const desserts = ref([
   {
     step: 'a1a2',
@@ -91,6 +94,7 @@ const loading = ref(false)
 const point = ref(10)
 
 const submit = () => {
+  emit("clickReady");
   load()
 };
 

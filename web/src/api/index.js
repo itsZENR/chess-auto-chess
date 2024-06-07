@@ -9,9 +9,18 @@ const apiClient = axios.create({
 
 export const getUsers = async () => {
     try {
-        await apiClient.get('api/users');
+        await apiClient.get('api/users/');
     } catch (error) {
-        console.error('Error get users:', error);
+        console.error('Error:', error);
+        throw error;
+    }
+};
+
+export const createRoom = async () => {
+    try {
+        await apiClient.post('api/room/');
+    } catch (error) {
+        console.error('Error:', error);
         throw error;
     }
 };
