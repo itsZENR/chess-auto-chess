@@ -11,7 +11,7 @@ const routes = [
         },
     },
     {
-        path: '/game',
+        path: '/game/:idRoom',
         name: 'game',
         component: () => import(/* webpackChunkName: "about" */ '../views/TheGame.vue'),
         meta: {

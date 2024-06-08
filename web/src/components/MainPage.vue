@@ -16,9 +16,11 @@ import {ref} from "vue";
 const idRoom = ref()
 
 async function routerPush() {
-  await router.push("/game")
   idRoom.value = await createRoom()
-  console.log("idRoom", idRoom.value)
+  await router.push({
+    name: 'game',
+    params: {idRoom: idRoom.value.room_name}
+  });
 }
 
 </script>
