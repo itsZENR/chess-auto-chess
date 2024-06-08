@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getCookie} from "@/api/api";
+import {getCookie} from "@/api/authCookie";
 
 const apiClient = axios.create({
     baseURL: 'http://127.0.0.1',
@@ -9,9 +9,9 @@ const apiClient = axios.create({
     },
 });
 
-export const getUsers = async () => {
+export const postAuth = async () => {
     try {
-        await apiClient.get('api/users/');
+        await apiClient.post('api/auth/');
     } catch (error) {
         console.error('Error:', error);
         throw error;
