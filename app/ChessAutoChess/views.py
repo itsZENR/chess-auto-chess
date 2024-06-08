@@ -26,21 +26,13 @@ def auth(request):
         user.first_name = 'John'
         user.last_name = 'Citizen'
         user.save()
-        return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
+        return JsonResponse(
+            {'status': 'success',
+             'message': 'Authenticated successfully, user was not found and was registered'})
     else:
-        return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
-
-
-    #         return JsonResponse({'status': 'success', 'message': 'Authenticated successfully'})
-    #     else:
-    #         return JsonResponse({'status': 'error', 'message': 'Authentication failed'}, status=401)
-    # else:
-    #     return JsonResponse({'status': 'error', 'message': 'Forbidden IP address'}, status=403)
-
-    return JsonResponse(
-        {'status': 'success',
-          'message': 'Authenticated successfully'})
-    # return render(request, "game/game.html", {"room_name": game.pk})
+        return JsonResponse(
+            {'status': 'success',
+             'message': 'Authentication successfully, user found'})
 
 
 def room(request):
@@ -55,15 +47,9 @@ def room(request):
          'room_name': game.pk})
 
 
-# def room(request, room_name):
-#     return render(request, 'chat/room.html', {
-#         'room_name': room_name
-#     })
-
 class UserView(ModelViewSet):
     '''
     endpoint: 
     '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
