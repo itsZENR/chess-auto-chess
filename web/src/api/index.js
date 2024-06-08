@@ -1,17 +1,19 @@
 import axios from 'axios';
 import {getCookie} from "@/api/authCookie";
 
-const apiClient = axios.create({
+const csrfToken = getCookie('csrftoken');
+
+const api = axios.create({
     baseURL: 'http://127.0.0.1',
     headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
+        'X-CSRFToken': csrfToken,
     },
 });
 
 export const postAuth = async () => {
     try {
-        await apiClient.post('api/auth/');
+        await api.post('/api/auth/');
     } catch (error) {
         console.error('Error:', error);
         throw error;
@@ -20,7 +22,7 @@ export const postAuth = async () => {
 
 export const createRoom = async () => {
     try {
-        await apiClient.post('api/room/');
+        await api.post('/api/room/');
     } catch (error) {
         console.error('Error:', error);
         throw error;
