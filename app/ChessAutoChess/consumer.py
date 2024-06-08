@@ -36,7 +36,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.engine = chess.engine.SimpleEngine.popen_uci(
             # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-            "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
+            "/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
