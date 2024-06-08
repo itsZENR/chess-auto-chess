@@ -11,7 +11,6 @@
 <script setup>
 import {computed} from "vue";
 import {useRoute} from "vue-router";
-
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 
@@ -35,6 +34,13 @@ const layoutComponent = computed(() => {
       }
     });
 
+// const {getToken} = useAuth()
+
+const handleLogin = async () => {
+  // await getToken();
+};
+
+handleLogin()
 
 </script>
 
