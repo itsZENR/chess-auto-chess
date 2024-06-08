@@ -30,7 +30,8 @@ export const postAuth = async () => {
 
 export const createRoom = async () => {
     try {
-        await api.post('/api/room/');
+        const response = await api.post('/api/room/');
+        return response.data;
     } catch (error) {
         console.error('Error:', error);
         throw error;

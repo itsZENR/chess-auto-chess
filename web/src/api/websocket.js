@@ -1,6 +1,6 @@
-export function connectWebsocket() {
+export function connectWebsocket(idRoom) {
     console.log("Starting connection to WebSocket Server")
-    const ws = new WebSocket("wss://echo.websocket.org")
+    const ws = new WebSocket(`ws://127.0.0.1:80/ws/${idRoom}/`)
 
     ws.onopen = function (event) {
         console.log("Успешное подключение к websocket")

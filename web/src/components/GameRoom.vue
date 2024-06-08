@@ -13,13 +13,16 @@
 <script setup>
 import {ref} from "vue";
 import {connectWebsocket} from "@/api/websocket";
-import {onBeforeRouteLeave} from "vue-router";
+import {onBeforeRouteLeave, useRoute} from "vue-router";
 import GameRoomBoard from "@/components/GameRoomBoard";
 import GameRoomTable from "@/components/GameRoomTable";
 import GameRoomPopap from "@/components/GameRoomPopap";
 
 
-const {ws} = connectWebsocket()
+const route = useRoute();
+console.log(route.params.idRoom);
+
+const {ws} = connectWebsocket(route.params.idRoom)
 
 const isReady = ref(false)
 
