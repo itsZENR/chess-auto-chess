@@ -1,11 +1,13 @@
 '''
 Логика endpoint'ов на сранице игры
 '''
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 # from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from rest_framework.viewsets import ModelViewSet
 from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
@@ -26,15 +28,19 @@ def auth(request):
         user.first_name = 'John'
         user.last_name = 'Citizen'
         user.save()
+        login(request, user)
         return JsonResponse(
             {'status': 'success',
              'message': 'Authenticated successfully, user was not found and was registered'})
     else:
+        login(request, user)
         return JsonResponse(
             {'status': 'success',
              'message': 'Authentication successfully, user found'})
 
 
+
+@login_required(login_url="/")
 def room(request):
     '''
     Создание комнаты
