@@ -4,6 +4,7 @@ export function connectWebsocket(idRoom) {
 
     ws.onopen = function (event) {
         console.log("Успешное подключение к websocket")
+        ws.send("hi");
     }
 
     ws.onmessage = function (event) {
