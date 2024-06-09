@@ -21,10 +21,10 @@ import {useSettingChess} from "@/components/composable/useSettingChess";
 import soundPath from '@/assets/sound/moveStep.mp3';
 
 
-defineProps({
-  isReady: Boolean
-})
-
+const { isReady, ws } = defineProps({
+  isReady: Boolean,
+  ws: Object,
+});
 
 const board = ref(null);
 const soundStep = ref(null);
@@ -32,7 +32,7 @@ const gameStatus = ref(false);
 const soundSrc = soundPath;
 
 onMounted(() => {
-  useSettingChess(board.value, soundStep.value, gameStatus.value);
+  useSettingChess(board.value, soundStep.value, gameStatus.value, ws);
 });
 
 </script>

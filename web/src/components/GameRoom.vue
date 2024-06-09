@@ -6,6 +6,7 @@
     <game-room-popap/>
     <game-room-board
         :isReady="isReady"
+        :ws="ws"
     />
     <game-room-table
         @click-ready="clickReady"
