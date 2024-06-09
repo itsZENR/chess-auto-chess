@@ -1,6 +1,9 @@
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
+import {useWebsocket} from "@/components/composable/useWebsocket";
 
-export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPoints, source, target, piece, newPos, oldPos, orientation) {
+export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPoints, source, target, piece, newPos, oldPos, orientation, ws) {
+
+    const {sendMessageToServer} = useWebsocket()
 
     // Очки фигур
     const pieceValue = {
@@ -67,6 +70,8 @@ export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPo
             target
         );
         whitePoints.value = points;
+        const message = [source, piece, target, newPos, whitePoints.value];
+        sendMessageToServer(ws, message)
     }
 
     if (orientation === "black") {
@@ -77,9 +82,9 @@ export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPo
             source,
             target
         );
-        // Для отправки на сервер
-        // var playerPoints = points;
         blackPoints.value = points;
+        const message = [source, piece, target, newPos, blackPoints.value];
+        sendMessageToServer(ws, message)
     }
 
     // Проверка на выброс фигуры
