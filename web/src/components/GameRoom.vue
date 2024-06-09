@@ -20,7 +20,6 @@ import GameRoomPopap from "@/components/GameRoomPopap";
 
 
 const route = useRoute();
-console.log(route.params.idRoom);
 
 const {ws} = connectWebsocket(route.params.idRoom)
 
