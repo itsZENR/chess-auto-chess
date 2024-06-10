@@ -3,25 +3,19 @@
 '''
 from uuid import uuid4
 
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.contrib.auth.models import User
-# from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.viewsets import ModelViewSet
 from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
 
 
-def token(request):
-    '''
-    Отправка токена в cookies
-    '''
-    return JsonResponse(
-            {'status': 'success',
-             'message': 'token received',})
 
+@ensure_csrf_cookie
 def auth(request):
     '''
     Аворизация и регистрация пользователя по токену
