@@ -24,6 +24,11 @@ class GameConsumer(AsyncWebsocketConsumer):
     # Статическое множество для хранения уникальных идентификаторов клиентов в комнате
     connected_clients = {}
 
+    points = 10
+    cost_dict = {'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9}
+
+    color_is_white = True
+
     async def connect(self):
         # Создаем объект шахматной доски
         self.board = chess.Board()
@@ -61,7 +66,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         if len(self.connected_clients[self.room_name]) == 2:
-            # Send message to room group
+
+            # Если игрок подключается вторым, то он играет за черных
+            self.color_is_white = False
+
+            # Отправка сообщения в группу
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "game.status",
                                        "message": 'GameStart'}
@@ -79,6 +88,11 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
+        if not text_data:
+            await self.send(text_data=json.dumps(
+                {'error': 'Empty message received'}))
+            return
+
         result = None
 
         text_data_json = json.loads(text_data)
@@ -88,6 +102,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': message
         }))
+
+        # Если клиент запросил состояние своего цвета
+        if message == 'Игрок':
+            # Отправляем сообщение пользователю который сделал запрос
+            await self.send(text_data=json.dumps({"color_is_white": self.color_is_white}))
 
         # Если была нажата кнопка у одного из пользоваетлей
         if message == 'Готов':
@@ -147,19 +166,60 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         if self.game_start:
             ic(result)
-            # Отправляем собщение в группу
-            await self.channel_layer.group_send(
-                self.room_group_name, {"type": "game.status",
-                                       "message": result,
-                                       'user': self.scope['user'].id
-                                       }
-            )
+
+            # Ебать копать, тут надо начинать считать очки
+            # Надо понять, какой фигурой какой игрок походил, и может ли он так сделать
+            # Сначала должны узнавать возможно ли поставить фигуру в указанное место
+
+            # Если мы взяли новую фигуру и поставили её на доску
+            if result[0] == 'spare':
+                # Узнаем что за фигура
+                piece = result[1][1]
+                # Смотрим сколько она стоит
+                cost = self.cost_dict[piece]
+                # Если это не выходит за пределы баланса
+                if not self.points - cost < 0:
+                    # Отнимаем эту стоимость от баланса
+                    self.points -= cost
+                    # Отправляем сообщение в группу
+                    await self.channel_layer.group_send(
+                        self.room_group_name,  {'type': 'game.status',
+                                                'message': result,
+                                                'user': self.scope['user'].id
+                                                'points': self.points})
+                else: 
+                    # Присылаем ошибку в поле error
+                    pass 
+
+            # Если мы убрали уже существующую на доске фигуру
+            elif result[2] == 'spare':
+                # Узнаем что за фигура
+                piece = result[1][1]
+                # Если выбранная фигура не король
+                if not piece == 'K':
+                    # Смотрим сколько стоит фигура
+                    cost = self.cost_dict[piece]
+                    # Возвращаем её стоимость
+                    points = points + cost
+                    # Отправляем сообщение в группу
+                    await self.channel_layer.group_send(
+                        self.room_group_name,  {'type': 'game.status',
+                                                'message': result,
+                                                'user': self.scope['user'].id
+                                                'points': self.points})
+                else: 
+                    # Присылаем ошибку в поле error
+                    pass 
+
 
             # Отправляем сообщение пользователю который запустил игру
             await self.send(text_data=json.dumps({"gameStatus": result}))
 
-    # Receive message from room group
+
     async def chat_message(self, event):
+        '''
+        Receive message from room group
+        '''
         message = event["message"]
         user_id = event['user']
 
