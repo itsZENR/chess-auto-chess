@@ -34,11 +34,18 @@ const {ws, isConnected} = connectWebsocket(route.params.idRoom)
 const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
 receivedWebsocket(ws)
 
+const isWhitePlayer = ref(false)
 const isPopupShow = ref(true)
+
 function popupClose() {
   isPopupShow.value = false
 }
+
 watch(messageWebsocket, () => {
+  if (messageWebsocket.value.color_is_white === true) {
+    console.log("color_is_white", messageWebsocket.value.color_is_white)
+    isWhitePlayer.value = true
+  }
   if (messageWebsocket.value.gameStatus === "GameStart") {
     popupClose()
   }

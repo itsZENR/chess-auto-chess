@@ -9,7 +9,7 @@ export function connectWebsocket(idRoom) {
         console.log("Успешное подключение к websocket")
         isConnected.value = true
         ws.send(JSON.stringify({
-            message: "hii",
+            message: "Игрок",
         }));
     }
 
