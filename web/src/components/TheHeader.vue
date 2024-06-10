@@ -8,7 +8,12 @@
       <v-row no-gutters class="d-flex align-center">
         <v-sheet class="mx-2">
           <v-app-bar-title>
-            <router-link to="/">Logo</router-link>
+            <router-link to="/">
+              <base-icon
+                  fill="#ffffff"
+                  width="50px"
+              />
+            </router-link>
           </v-app-bar-title>
         </v-sheet>
         <v-sheet class="mx-2">
@@ -18,7 +23,10 @@
         </v-sheet>
       </v-row>
 
-      <div class="pa-2">
+      <div
+          v-if="false"
+          class="pa-2"
+      >
         <base-button
             @btn-click="routerPush"
             :size="'small'"
@@ -34,6 +42,7 @@
 <script setup>
 import router from "@/router";
 import BaseButton from "@/components/ui/BaseButton";
+import BaseIcon from "@/components/ui/BaseIcon";
 
 
 function routerPush() {
