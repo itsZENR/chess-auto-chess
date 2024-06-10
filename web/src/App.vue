@@ -11,11 +11,10 @@
 <script setup>
 import {computed} from "vue";
 import {useRoute} from "vue-router";
-import {getToken, postAuth} from "@/api";
+import {postAuth} from "@/api";
 import BaseLayout from '@/layouts/BaseLayout.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 
-getToken()
 postAuth()
 
 const route = useRoute();
