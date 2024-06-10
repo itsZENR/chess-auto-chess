@@ -1,8 +1,9 @@
 <template>
   <div class="text-center pa-4">
     <v-dialog
-        v-model="dialog"
+        v-model="isShow"
         width="auto"
+        persistent
     >
       <v-card
           max-width="500"
@@ -25,7 +26,7 @@
           <v-btn
               class="ms-auto"
               text="Закрыть"
-              @click="dialog = false"
+              @click="popupClose"
           ></v-btn>
         </template>
       </v-card>
@@ -34,13 +35,25 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, toRefs} from "vue";
 import {useRoute} from "vue-router";
 
 
+const props = defineProps({
+  isShow: Boolean,
+});
+
+const emit = defineEmits({
+  'popupClose': null
+})
+
+
+function popupClose() {
+  emit("popupClose")
+}
+
 const route = useRoute();
 
-const dialog = ref(true)
 const urlValue = ref(`${window.location.origin}${route.fullPath}`);
 const urlElement = ref()
 

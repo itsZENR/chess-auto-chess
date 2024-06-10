@@ -3,7 +3,10 @@
     Websocket не подключен
   </v-row>
   <v-row v-else class="justify-center">
-    <game-room-popap/>
+    <game-room-popup
+        :is-show="isPopupShow"
+        @popup-close="popupClose"
+    />
     <game-room-board
         :isReady="isReady"
         :ws="ws"
@@ -21,7 +24,7 @@ import {connectWebsocket} from "@/api/websocket";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import GameRoomBoard from "@/components/GameRoomBoard";
 import GameRoomTable from "@/components/GameRoomTable";
-import GameRoomPopap from "@/components/GameRoomPopap";
+import GameRoomPopup from "@/components/GameRoomPopup";
 import {useWebsocket} from "@/components/composable/useWebsocket";
 
 
@@ -30,6 +33,11 @@ const route = useRoute();
 const {ws, isConnected} = connectWebsocket(route.params.idRoom)
 const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
 receivedWebsocket(ws)
+
+const isPopupShow = ref(true)
+function popupClose() {
+  isPopupShow.value = false
+}
 
 const isReady = ref(false)
 const clickReady = () => {
