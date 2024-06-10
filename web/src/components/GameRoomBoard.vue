@@ -16,12 +16,13 @@
 <script setup>
 import "@/assets/js/chessboard-1.0.0.min";
 import {onMounted, ref} from 'vue';
-import BaseText from "@/components/ui/BaseText";
 import {useSettingChess} from "@/components/composable/useSettingChess";
+import {useLogicBoard} from "@/components/composable/useLogicBoard";
+import BaseText from "@/components/ui/BaseText";
 import soundPath from '@/assets/sound/moveStep.mp3';
 
 
-const { isReady, ws } = defineProps({
+const {isReady, ws} = defineProps({
   isReady: Boolean,
   ws: Object,
 });
@@ -30,9 +31,12 @@ const board = ref(null);
 const soundStep = ref(null);
 const gameStatus = ref(false);
 const soundSrc = soundPath;
+const {receivedWebsocket} = useLogicBoard()
+
 
 onMounted(() => {
   useSettingChess(board.value, soundStep.value, gameStatus.value, ws);
+  receivedWebsocket(ws)
 });
 
 </script>

@@ -13,11 +13,6 @@ export function connectWebsocket(idRoom) {
         }));
     }
 
-    ws.onmessage = function (event) {
-        const data = JSON.parse(event.data);
-        console.log("WebSocket received message:", data);
-    }
-
     ws.onclose = function () {
         console.log("Соединение Websocket закрыто");
     }
