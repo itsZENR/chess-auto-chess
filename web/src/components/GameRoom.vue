@@ -13,7 +13,7 @@
         :message="messageWebsocket"
     />
     <game-room-table
-        @click-ready="clickReady"
+        @click-ready="changeReady"
     />
   </v-row>
 </template>
@@ -45,8 +45,11 @@ watch(messageWebsocket, () => {
 })
 
 const isReady = ref(false)
-const clickReady = () => {
+const changeReady = () => {
   isReady.value = !isReady.value
+  if (isReady) {
+    sendMessage("Готов")
+  }
 }
 
 const sendMessage = (message) => {

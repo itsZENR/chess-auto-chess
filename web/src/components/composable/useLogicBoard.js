@@ -9,10 +9,10 @@ export function useLogicBoard() {
 
         if (data.message === "Готов") {
             // Записываем позицию доски
-            let boardFen = board.fen();
+            let boardFen = board.value.fen();
             boardFen = boardFen + " " + "w - - 0 1";
             // Записываем позицию в game
-            board.position(game.load(boardFen, {skipValidation: true}));
+            board.value.position(game.load(boardFen, {skipValidation: true}));
         }
 
         if (data.gameStatus === "GameStart") {
