@@ -1,6 +1,7 @@
 '''
 Логика endpoint'ов на сранице игры
 '''
+from uuid import uuid4
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -16,13 +17,15 @@ from ChessAutoChess.serializers import UserSerializer
 
 def auth(request):
     '''
-    Аворизация и регистрация пользователя по IP
+    Аворизация и регистрация пользователя по токену
     '''
-    username = request.META['REMOTE_ADDR']
-    user = authenticate(username=username, password='mypassword')
+    token = request.META['HTTP_TOKEN']
+    if not token:
+        token = uuid4()
+    user = authenticate(username=token, password='mypassword')
 
     if user is None:
-        user = User.objects.create_user(username, 'myemail@crazymail.com', 'mypassword')
+        user = User.objects.create_user(token, 'myemail@crazymail.com', 'mypassword')
 
         # Обновите поля и сохраните их снова
         user.first_name = 'John'
@@ -31,7 +34,8 @@ def auth(request):
         login(request, user)
         return JsonResponse(
             {'status': 'success',
-             'message': 'Authenticated successfully, user was not found and was registered'})
+             'message': 'Authenticated successfully, user was not found and was registered',
+             'token': token,})
     else:
         login(request, user)
         return JsonResponse(

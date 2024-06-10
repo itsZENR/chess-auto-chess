@@ -161,8 +161,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, {'type': 'chat.message',
                                        'message': message,
                                        'user': self.scope['user'].id
-                                       }
-            )
+                                       })
 
         if self.game_start:
             ic(result)
@@ -185,8 +184,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                     await self.channel_layer.group_send(
                         self.room_group_name,  {'type': 'game.status',
                                                 'message': result,
-                                                'user': self.scope['user'].id
-                                                'points': self.points})
+                                                'user': self.scope['user'].id,
+                                                'points': self.points,})
                 else: 
                     # Присылаем ошибку в поле error
                     pass 
@@ -205,15 +204,15 @@ class GameConsumer(AsyncWebsocketConsumer):
                     await self.channel_layer.group_send(
                         self.room_group_name,  {'type': 'game.status',
                                                 'message': result,
-                                                'user': self.scope['user'].id
-                                                'points': self.points})
+                                                'user': self.scope['user'].id,
+                                                'points': self.points,})
                 else: 
                     # Присылаем ошибку в поле error
                     pass 
 
 
             # Отправляем сообщение пользователю который запустил игру
-            await self.send(text_data=json.dumps({"gameStatus": result}))
+            await self.send(text_data=json.dumps({"game_status": result}))
 
 
     async def chat_message(self, event):
@@ -273,4 +272,4 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     async def game_status(self, event):
         message = event["message"]
-        await self.send(text_data=json.dumps({"gameStatus": message}))
+        await self.send(text_data=json.dumps({"game_status": message}))
