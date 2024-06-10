@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getCookie} from "@/api/authCookie";
+import {getCookie, getAccessToken, setAccessToken} from "@/api/authCookie";
 
 
 const api = axios.create({
@@ -14,6 +14,10 @@ api.interceptors.request.use(config => {
     if (csrfToken) {
         config.headers['X-CSRFToken'] = csrfToken;
     }
+    const token = getAccessToken();
+    if (token) {
+        config.headers['TOKEN'] = token;
+    }
     return config;
 }, error => {
     return Promise.reject(error);
@@ -21,7 +25,10 @@ api.interceptors.request.use(config => {
 
 export const postAuth = async () => {
     try {
-        await api.post('/api/auth/');
+        const response = await axios.post(`/api/auth/`);
+        console.log("response", response.data)
+        const token = response.data.token;
+        setAccessToken(token);
     } catch (error) {
         console.error('Error:', error);
         throw error;
