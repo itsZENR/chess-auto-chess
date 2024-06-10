@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {connectWebsocket} from "@/api/websocket";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import GameRoomBoard from "@/components/GameRoomBoard";
@@ -38,6 +38,11 @@ const isPopupShow = ref(true)
 function popupClose() {
   isPopupShow.value = false
 }
+watch(messageWebsocket, () => {
+  if (messageWebsocket.value.gameStatus === "GameStart") {
+    popupClose()
+  }
+})
 
 const isReady = ref(false)
 const clickReady = () => {
