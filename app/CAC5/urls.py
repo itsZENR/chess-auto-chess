@@ -28,7 +28,6 @@ router.register('api/users', UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', token),
     path('api/auth/', auth),
     path('api/room/', room),
 ]
