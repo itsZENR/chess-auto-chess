@@ -1,3 +1,5 @@
+import {ref} from "vue";
+
 export function useWebsocket() {
 
     const sendMessageToServer = (ws, message) => {
@@ -12,5 +14,12 @@ export function useWebsocket() {
         }
     }
 
-    return {sendMessageToServer}
+    const messageWebsocket = ref(null)
+    const receivedWebsocket = (ws) => {
+        ws.onmessage = (event) => {
+            messageWebsocket.value = JSON.parse(event.data);
+        }
+    }
+
+    return {sendMessageToServer, receivedWebsocket, messageWebsocket}
 }
