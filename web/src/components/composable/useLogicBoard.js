@@ -18,7 +18,7 @@ export function useLogicBoard() {
         if (data.gameStatus === "GameStart") {
             console.log("gameStatus:", data.gameStatus);
             // убираем неактив
-            hidden.classList.remove("_active");
+            // hidden.classList.remove("_active");
 
             // Обновляем имена
             // blackPlayer.innerHTML = blackPlayerName;

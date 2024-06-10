@@ -43,6 +43,8 @@ const props = defineProps({
   isShow: Boolean,
 });
 
+const {isShow} = toRefs(props);
+
 const emit = defineEmits({
   'popupClose': null
 })
