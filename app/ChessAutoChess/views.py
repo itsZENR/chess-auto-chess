@@ -14,6 +14,13 @@ from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
 
 
+def token(request):
+    '''
+    Отправка токена в cookies
+    '''
+    return JsonResponse(
+            {'status': 'success',
+             'message': 'token received',})
 
 def auth(request):
     '''
