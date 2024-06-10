@@ -19,7 +19,7 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-from ChessAutoChess.views import UserView, auth, room
+from ChessAutoChess.views import UserView, auth, room, token
 
 
 router = SimpleRouter()
@@ -28,6 +28,7 @@ router.register('api/users', UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/token/', token),
     path('api/auth/', auth),
     path('api/room/', room),
 ]
