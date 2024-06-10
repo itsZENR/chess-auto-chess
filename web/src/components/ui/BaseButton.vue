@@ -1,10 +1,10 @@
 <template>
   <v-btn
       @click="handleClick"
-      color="primary"
+      :color="color"
       rounded="0"
       :variant="variantBtn"
-      :size="props.size"
+      :size="size"
   >
     <slot></slot>
   </v-btn>
@@ -16,6 +16,11 @@ const props = defineProps({
   size: {
     String,
     default: "large",
+    required: false
+  },
+  color: {
+    String,
+    default: "primary",
     required: false
   },
   variantBtn: {
