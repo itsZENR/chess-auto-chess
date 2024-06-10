@@ -5,6 +5,8 @@
         <base-button
             @btn-click="submit"
             :loading="loading"
+            :color="isBtnColor"
+            :variantBtn="isBtnVariants"
         >
           Готов
         </base-button>
@@ -92,11 +94,26 @@ const desserts = ref([
 ])
 const loading = ref(false)
 const point = ref(10)
+const isReady = ref(false)
+const isBtnVariants = ref('outlined')
+const isBtnColor = ref('primary')
 
 const submit = () => {
   emit("clickReady");
   load()
+  changeActiveBtn(isReady, isBtnVariants, isBtnColor)
 };
+
+const changeActiveBtn = (isReady, isBtnVariants, isBtnColor) => {
+  isReady.value = !isReady.value
+  if (isReady.value) {
+    isBtnVariants.value = 'elevated'
+    isBtnColor.value = 'green-darken-3'
+  } else {
+    isBtnVariants.value = 'outlined'
+    isBtnColor.value = 'primary'
+  }
+}
 
 const load = () => {
   loading.value = true
