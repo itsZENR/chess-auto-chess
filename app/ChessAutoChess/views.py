@@ -20,7 +20,7 @@ def auth(request):
     '''
     Аворизация и регистрация пользователя по токену
     '''
-    token = request.META['HTTP_TOKEN']
+    token = request.META['HTTP_X_FORWARDED_FOR']
     if not token:
         token = uuid4()
     user = authenticate(username=token, password='mypassword')
