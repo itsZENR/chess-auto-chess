@@ -7,6 +7,7 @@
     <game-room-board
         :isReady="isReady"
         :ws="ws"
+        :message="messageWebsocket"
     />
     <game-room-table
         @click-ready="clickReady"
@@ -27,7 +28,8 @@ import {useWebsocket} from "@/components/composable/useWebsocket";
 const route = useRoute();
 
 const {ws, isConnected} = connectWebsocket(route.params.idRoom)
-const {sendMessageToServer} = useWebsocket()
+const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
+receivedWebsocket(ws)
 
 const isReady = ref(false)
 const clickReady = () => {
