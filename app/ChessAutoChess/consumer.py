@@ -1,7 +1,9 @@
-# game/consumers.py
+'''
+Consumer(Потребитель) реализует логику работы вебсокета
+'''
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.db import database_sync_to_async
+from channels.db import database_sync_to_async as db_s2a
 import chess
 import chess.engine
 from icecream import ic
@@ -21,7 +23,7 @@ class GameConsumer(AsyncWebsocketConsumer):
     game = ''
     # Запушенна ли была уже игра
     game_start = False
-    # Статическое множество для хранения уникальных идентификаторов клиентов в комнате
+    # список для хранения уникальных идентификаторов клиентов в комнате
     connected_clients = {}
 
     points = 10
@@ -41,7 +43,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.engine = chess.engine.SimpleEngine.popen_uci(
             # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-            "/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
+            "/app/ChessAutoChess/engine/\
+                stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64")
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
@@ -51,12 +54,12 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         # Добавление клиента в множество подключенных клиентов
         ic(self.connected_clients)
-        if not self.room_name in self.connected_clients:
+        if self.room_name not in self.connected_clients:
             self.connected_clients[self.room_name] = []
 
         self.connected_clients[self.room_name].append(self.scope["user"].id)
 
-        self.game = await database_sync_to_async(Game.objects.get)(id=self.room_name)
+        self.game = await db_s2a(Game.objects.get)(id=self.room_name)
 
         # Join room group
         await self.channel_layer.group_add(
@@ -106,27 +109,32 @@ class GameConsumer(AsyncWebsocketConsumer):
         # Если клиент запросил состояние своего цвета
         if message == 'Игрок':
             # Отправляем сообщение пользователю который сделал запрос
-            await self.send(text_data=json.dumps({"color_is_white": self.color_is_white}))
+            await self.send(text_data=json.dumps(
+                {"color_is_white": self.color_is_white}))
 
         # Если была нажата кнопка у одного из пользоваетлей
         if message == 'Готов':
             # То получаем id пользователя нажавшего на кнопку
             user_id = self.scope['user'].id
-            self.game = await database_sync_to_async(Game.objects.get)(id=self.room_name)
-            white_player_id = await database_sync_to_async(lambda: self.game.white_player.id)()
-            black_player_id = await database_sync_to_async(lambda: self.game.black_player.id)()
+            self.game = await db_s2a(Game.objects.get)(id=self.room_name)
+            wpid = await db_s2a(lambda: self.game.white_player.id)()
+            bpid = await db_s2a(lambda: self.game.black_player.id)()
 
-            # И в этой игре уже подключенно два пользователя и тот кто нажал кнопку "готов" является одним из двух игроков
-            if not white_player_id == black_player_id \
-                    and (white_player_id == user_id or black_player_id == user_id):
-                # При этом записанно готовых игроков меньше двух и пользователь который готов не был записан ранее
+            # И в этой игре уже подключенно два пользователя
+            # и тот кто нажал кнопку "готов" является одним из двух игроков
+            if not wpid == bpid \
+                    and (wpid == user_id or bpid == user_id):
+                # При этом записанно готовых игроков меньше двух
+                # и пользователь который готов не был записан ранее
+                # и игра не зупущенна
                 if len(self.ready_player[self.room_name]) < 2 \
-                        and not user_id in self.ready_player[self.room_name] \
+                        and user_id not in self.ready_player[self.room_name] \
                         and not self.game_start:
                     # То записываем этого пользователя
                     self.ready_player[self.room_name].append(user_id)
 
-            if not self.game_start and len(self.ready_player[self.room_name]) == 2:
+            if len(self.ready_player[self.room_name]) == 2 \
+                    and not self.game_start:
 
                 self.game_start = True
                 while self.board.outcome() is None:
@@ -139,7 +147,8 @@ class GameConsumer(AsyncWebsocketConsumer):
                         time.sleep(1)
                     move = result.move
 
-                    # Двигаем шахматные фигуры в соответствии с ответом Stockfish
+                    # Двигаем шахматные фигуры
+                    # в соответствии с ответом движка Stockfish
                     self.board.push(move)
 
                     # Отправляем собщение в группу
@@ -167,8 +176,9 @@ class GameConsumer(AsyncWebsocketConsumer):
             ic(result)
 
             # Ебать копать, тут надо начинать считать очки
-            # Надо понять, какой фигурой какой игрок походил, и может ли он так сделать
-            # Сначала должны узнавать возможно ли поставить фигуру в указанное место
+            # Надо понять, какой фигурой какой игрок походил,
+            # и может ли он так сделать
+            # Тут надо узнавать возможно ли поставить фигуру в указанное место
 
             # Если мы взяли новую фигуру и поставили её на доску
             if result[0] == 'spare':
@@ -185,10 +195,10 @@ class GameConsumer(AsyncWebsocketConsumer):
                         self.room_group_name,  {'type': 'game.status',
                                                 'message': result,
                                                 'user': self.scope['user'].id,
-                                                'points': self.points,})
-                else: 
+                                                'points': self.points})
+                else:
                     # Присылаем ошибку в поле error
-                    pass 
+                    pass
 
             # Если мы убрали уже существующую на доске фигуру
             elif result[2] == 'spare':
@@ -199,21 +209,19 @@ class GameConsumer(AsyncWebsocketConsumer):
                     # Смотрим сколько стоит фигура
                     cost = self.cost_dict[piece]
                     # Возвращаем её стоимость
-                    points = points + cost
+                    self.points = self.points + cost
                     # Отправляем сообщение в группу
                     await self.channel_layer.group_send(
                         self.room_group_name,  {'type': 'game.status',
                                                 'message': result,
                                                 'user': self.scope['user'].id,
-                                                'points': self.points,})
-                else: 
+                                                'points': self.points})
+                else:
                     # Присылаем ошибку в поле error
-                    pass 
-
+                    pass
 
             # Отправляем сообщение пользователю который запустил игру
             await self.send(text_data=json.dumps({"game_status": result}))
-
 
     async def chat_message(self, event):
         '''
@@ -222,7 +230,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         message = event["message"]
         user_id = event['user']
 
-        if type(message) == list:
+        if isinstance(message, list):
 
             source = message[0].upper()
             piece = message[1]
@@ -235,20 +243,29 @@ class GameConsumer(AsyncWebsocketConsumer):
             else:
                 color = 'BLACK'
 
-            figures_dict = {'P': 'PAWN', 'N': 'KNIGHT', 'B': 'BISHOP', 'R': 'ROOK', 'Q': 'QUEEN', 'K': 'KING'}
+            figures_dict = {'P': 'PAWN',
+                            'N': 'KNIGHT',
+                            'B': 'BISHOP',
+                            'R': 'ROOK',
+                            'Q': 'QUEEN',
+                            'K': 'KING'}
+
             piece = figures_dict[piece[1]]
 
             if source == 'SPARE':
-                exec(f'self.board.set_piece_at(chess.{target}, chess.Piece(chess.{piece}, chess.{color}))')
+                exec(f'self.board.set_piece_at(chess.{target},'
+                     f'chess.Piece(chess.{piece}, chess.{color}))')
 
             # Удаляем фигуру с клетки
             elif target == 'OFFBOARD':
                 exec(f'self.board.remove_piece_at(chess.{source})')
 
-            # Удаляем старую фигуру и ставим новую такую-же в новом месте, тем самым реализуя перемещение
+            # Удаляем старую фигуру и ставим новую такую-же в новом месте,
+            # тем самым реализуя перемещение
             else:
                 exec(f'self.board.remove_piece_at(chess.{source})')
-                exec(f'self.board.set_piece_at(chess.{target}, chess.Piece(chess.{piece}, chess.{color}))')
+                exec(f'self.board.set_piece_at(chess.{target},'
+                     f'chess.Piece(chess.{piece}, chess.{color}))')
 
         # Check if the message sender is not the current connection
         if str(user_id) != str(self.scope['user'].id):
