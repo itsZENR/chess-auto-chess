@@ -25,23 +25,9 @@ api.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
-// export const getToken = async () => {
-//     try {
-//         await axios.get(`/api/token/`);
-//         // const response = await api.get(`/api/token/`);
-//         // Cookies.set("csrftoken", response.data, {expires: 1});
-//
-//         // console.log("response", response.data)
-//         // return response
-//     } catch (error) {
-//         console.error('Error:', error);
-//         throw error;
-//     }
-// };
-
 export const postAuth = async () => {
     try {
-        await api.post(`/api/auth/`);
+        await api.get(`/api/auth/`);
     } catch (error) {
         console.error('Error:', error);
         throw error;
