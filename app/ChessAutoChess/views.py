@@ -49,7 +49,7 @@ def auth(request):
              'message': 'Authentication successfully, user found'})
 
 
-# @ensure_csrf_cookie
+@csrf_exempt
 @login_required(login_url="/")
 def room(request):
     '''
