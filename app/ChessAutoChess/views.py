@@ -8,13 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from django.views.decorators.csrf import ensure_csrf_cookie
+
 from rest_framework.viewsets import ModelViewSet
 from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
+from django.views.decorators.csrf import (
+                                    # ensure_csrf_cookie,
+                                    csrf_exempt,
+)
 
 
-@ensure_csrf_cookie
+@csrf_exempt
 def auth(request):
     '''
     Аворизация и регистрация пользователя по токену
@@ -45,7 +49,7 @@ def auth(request):
              'message': 'Authentication successfully, user found'})
 
 
-@ensure_csrf_cookie
+# @ensure_csrf_cookie
 @login_required(login_url="/")
 def room(request):
     '''
