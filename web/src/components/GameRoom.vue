@@ -26,7 +26,10 @@ import GameRoomBoard from "@/components/GameRoomBoard";
 import GameRoomTable from "@/components/GameRoomTable";
 import GameRoomPopup from "@/components/GameRoomPopup";
 import {useWebsocket} from "@/components/composable/useWebsocket";
+import {getAuth} from "@/api/index.js";
 
+
+getAuth()
 
 const route = useRoute();
 
@@ -46,7 +49,7 @@ watch(messageWebsocket, () => {
     console.log("color_is_white", messageWebsocket.value.color_is_white)
     isWhitePlayer.value = true
   }
-  if (messageWebsocket.value.gameStatus === "GameStart") {
+  if (messageWebsocket.value.game_status === "GameStart") {
     popupClose()
   }
 })

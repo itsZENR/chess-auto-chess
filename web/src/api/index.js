@@ -12,7 +12,6 @@ const api = axios.create({
 
 api.interceptors.request.use(config => {
     const csrfToken = getCookie('csrftoken');
-    console.log("csrfToken", csrfToken)
     if (csrfToken) {
         config.headers['X-CSRFToken'] = csrfToken;
     }
@@ -25,7 +24,7 @@ api.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
-export const postAuth = async () => {
+export const getAuth = async () => {
     try {
         await api.get(`/api/auth/`);
     } catch (error) {
