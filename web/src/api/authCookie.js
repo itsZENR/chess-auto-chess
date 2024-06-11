@@ -16,9 +16,9 @@ export function getCookie(name) {
 }
 
 export function getAccessToken() {
-  return Cookies.get("accessToken");
+  return Cookies.get("TOKEN");
 }
 
 export function setAccessToken(token) {
-  Cookies.set("accessToken", token, {expires: 1});
+  Cookies.set("TOKEN", token, {expires: 1});
 }
