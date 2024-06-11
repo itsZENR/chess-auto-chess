@@ -26,7 +26,8 @@ api.interceptors.request.use(config => {
 
 export const getAuth = async () => {
     try {
-        await api.get(`/api/auth/`);
+        const response = await api.get(`/api/auth/`);
+        setAccessToken(response.data.token)
     } catch (error) {
         console.error('Error:', error);
         throw error;

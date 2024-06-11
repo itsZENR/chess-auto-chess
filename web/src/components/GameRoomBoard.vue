@@ -51,7 +51,7 @@ onMounted(() => {
 });
 
 watch(message, () => {
-  logicBoard(message.value, board.value, game)
+  logicBoard(message.value, board.value, game, gameStatus)
 })
 
 watch(orientation, () => {
