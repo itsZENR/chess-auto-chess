@@ -1,7 +1,7 @@
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
 import {useWebsocket} from "@/components/composable/useWebsocket";
 
-export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPoints, source, target, piece, newPos, oldPos, orientation, ws) {
+export function useLogicChess(board, soundStep, gameStatus, totalPoints, source, target, piece, newPos, oldPos, orientation, ws) {
 
     const {sendMessageToServer} = useWebsocket()
 
@@ -55,37 +55,22 @@ export function useLogicChess(board, soundStep, gameStatus, whitePoints, blackPo
     }
 
     if (!isTargetOutside && isTargetSpare) {
-        if (isEnoughPoints(piece, pieceValue, whitePoints.value, blackPoints.value)) {
+        if (isEnoughPoints(piece, pieceValue, totalPoints.value)) {
             return snapbackMove();
         }
     }
 
     // подсчет очков
-    if (orientation === "white") {
-        let points = counterPointsForPiece(
-            pieceValue,
-            whitePoints.value,
-            piece,
-            source,
-            target
-        );
-        whitePoints.value = points;
-        const message = [source, piece, target, newPos, whitePoints.value];
-        sendMessageToServer(ws, message)
-    }
+    totalPoints.value = counterPointsForPiece(
+        pieceValue,
+        totalPoints.value,
+        piece,
+        source,
+        target
+    );
+    const message = [source, piece, target, newPos, totalPoints.value];
+    sendMessageToServer(ws, message)
 
-    if (orientation === "black") {
-        let points = counterPointsForPiece(
-            pieceValue,
-            blackPoints.value,
-            piece,
-            source,
-            target
-        );
-        blackPoints.value = points;
-        const message = [source, piece, target, newPos, blackPoints.value];
-        sendMessageToServer(ws, message)
-    }
 
     // Проверка на выброс фигуры
     if (isTargetOutside) {

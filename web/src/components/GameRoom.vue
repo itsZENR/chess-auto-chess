@@ -11,8 +11,10 @@
         :isReady="isReady"
         :ws="ws"
         :message="messageWebsocket"
+        @points="updateTotalPoints"
     />
     <game-room-table
+        :total-points="totalPoints"
         @click-ready="changeReady"
     />
   </v-row>
@@ -37,6 +39,11 @@ const {ws, isConnected} = connectWebsocket(route.params.idRoom)
 const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
 receivedWebsocket(ws)
 
+const totalPoints = ref(null)
+const updateTotalPoints = (points) => {
+  totalPoints.value = points
+}
+
 const isWhitePlayer = ref(false)
 const isPopupShow = ref(true)
 
@@ -46,7 +53,6 @@ function popupClose() {
 
 watch(messageWebsocket, () => {
   if (messageWebsocket.value.color_is_white === true) {
-    console.log("color_is_white", messageWebsocket.value.color_is_white)
     isWhitePlayer.value = true
   }
   if (messageWebsocket.value.game_status === "GameStart") {

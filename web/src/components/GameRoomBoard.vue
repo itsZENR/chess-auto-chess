@@ -31,21 +31,31 @@ const props = defineProps({
 
 const {isReady, ws, message} = toRefs(props);
 
+
+const emit = defineEmits({
+  'points': Number
+})
+
+
 const board = ref(null);
 const soundStep = ref(null);
 const gameStatus = ref(false);
 const soundSrc = soundPath;
 const game = new Chess();
 const {logicBoard} = useLogicBoard()
-
+const totalPoints = ref(10);
 
 onMounted(() => {
-  useSettingChess(board.value, soundStep.value, gameStatus.value, ws);
+  useSettingChess(board.value, soundStep.value, gameStatus.value, ws, totalPoints);
 });
 
 watch(message, () => {
   logicBoard(message.value, board.value, game)
 })
+
+watch(totalPoints, () => {
+  emit('points', totalPoints.value);
+}, { immediate: true })
 
 </script>
 

@@ -35,16 +35,12 @@ export function useFunctionsChess() {
     }
 
     // Функция на проверку количество очков у черного и белого
-    function isEnoughPoints(piece, pieceValue, whitePoints, blackPoints) {
+    function isEnoughPoints(piece, pieceValue, totalPoints) {
         // Получаем тип фигуры
         let pieceType = piece.charAt(1);
         let pieceVal = pieceValue[pieceType]; // Получаем значение фигуры из объекта pieceValue
 
-        if (whitePoints - pieceVal < 0) {
-            console.log("Недостаточно очков для добавления фигуры.");
-            return true;
-        }
-        if (blackPoints - pieceVal < 0) {
+        if (totalPoints - pieceVal < 0) {
             console.log("Недостаточно очков для добавления фигуры.");
             return true;
         }

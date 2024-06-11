@@ -12,7 +12,7 @@
         </base-button>
       </v-col>
       <v-col>
-        <span><strong>{{ point }}</strong> point </span>
+        <span><strong>{{ totalPoints }}</strong> очков </span>
       </v-col>
     </v-row>
     <v-divider class="my-4"/>
@@ -57,8 +57,14 @@
 <script setup>
 import BaseButton from "@/components/ui/BaseButton";
 import BaseText from "@/components/ui/BaseText"
-import {ref} from "vue";
+import {ref, toRefs} from "vue";
 
+
+const props = defineProps({
+  totalPoints: Number,
+});
+
+const {totalPoints} = toRefs(props);
 
 const emit = defineEmits(['clickReady'])
 
@@ -93,7 +99,6 @@ const desserts = ref([
   },
 ])
 const loading = ref(false)
-const point = ref(10)
 const isReady = ref(false)
 const isBtnVariants = ref('outlined')
 const isBtnColor = ref('primary')
