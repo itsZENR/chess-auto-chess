@@ -17,14 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.views import (
+                                SpectacularAPIView,
+                                SpectacularSwaggerView,
+                                SpectacularRedocView
+)
 
-from ChessAutoChess.views import UserView, auth, room
+from ChessAutoChess.views import (
+                            auth,
+                            room,
+                            # UserView
+)
 
 
 router = SimpleRouter()
 
-router.register('api/users', UserView)
+# router.register('api/users', UserView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

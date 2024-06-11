@@ -14,7 +14,6 @@ from ChessAutoChess.models import Game
 from ChessAutoChess.serializers import UserSerializer
 
 
-
 @ensure_csrf_cookie
 def auth(request):
     '''
@@ -26,7 +25,9 @@ def auth(request):
     user = authenticate(username=token, password='mypassword')
 
     if user is None:
-        user = User.objects.create_user(token, 'myemail@crazymail.com', 'mypassword')
+        user = User.objects.create_user(token,
+                                        'myemail@crazymail.com',
+                                        'mypassword')
 
         # Обновите поля и сохраните их снова
         user.first_name = 'John'
@@ -35,14 +36,13 @@ def auth(request):
         login(request, user)
         return JsonResponse(
             {'status': 'success',
-             'message': 'Authenticated successfully, user was not found and was registered',
-             'token': token,})
+             'message': 'Authenticated successfully, user was registered',
+             'token': token})
     else:
         login(request, user)
         return JsonResponse(
             {'status': 'success',
              'message': 'Authentication successfully, user found'})
-
 
 
 @login_required(login_url="/")
@@ -54,13 +54,13 @@ def room(request):
     game.save()
     return JsonResponse(
         {'status': 'success',
-         'message': 'Create successfully', 
+         'message': 'Create successfully',
          'room_name': game.pk})
 
 
 class UserView(ModelViewSet):
     '''
-    endpoint: 
+    endpoint:
     '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
