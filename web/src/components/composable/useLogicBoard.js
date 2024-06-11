@@ -15,8 +15,8 @@ export function useLogicBoard() {
             board.value.position(game.load(boardFen, {skipValidation: true}));
         }
 
-        if (data.gameStatus === "GameStart") {
-            console.log("gameStatus:", data.gameStatus);
+        if (data.game_status === "GameStart") {
+            console.log("gameStatus:", data.game_status);
         }
     }
 
