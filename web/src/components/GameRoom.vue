@@ -11,6 +11,7 @@
         :isReady="isReady"
         :ws="ws"
         :message="messageWebsocket"
+        :orientation="isWhitePlayer"
         @points="updateTotalPoints"
     />
     <game-room-table
@@ -44,7 +45,7 @@ const updateTotalPoints = (points) => {
   totalPoints.value = points
 }
 
-const isWhitePlayer = ref(false)
+const isWhitePlayer = ref(true)
 const isPopupShow = ref(true)
 
 function popupClose() {
@@ -52,8 +53,8 @@ function popupClose() {
 }
 
 watch(messageWebsocket, () => {
-  if (messageWebsocket.value.color_is_white === true) {
-    isWhitePlayer.value = true
+  if (messageWebsocket.value.color_is_white === false) {
+    isWhitePlayer.value = false
   }
   if (messageWebsocket.value.game_status === "GameStart") {
     popupClose()

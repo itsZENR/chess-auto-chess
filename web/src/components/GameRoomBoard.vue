@@ -27,9 +27,10 @@ const props = defineProps({
   isReady: Boolean,
   ws: Object,
   message: null,
+  orientation: Boolean,
 });
 
-const {isReady, ws, message} = toRefs(props);
+const {isReady, ws, message, orientation} = toRefs(props);
 
 
 const emit = defineEmits({
@@ -53,9 +54,15 @@ watch(message, () => {
   logicBoard(message.value, board.value, game)
 })
 
+watch(orientation, () => {
+  if (!orientation.value) {
+    board.value.value.orientation("black");
+  }
+})
+
 watch(totalPoints, () => {
   emit('points', totalPoints.value);
-}, { immediate: true })
+}, {immediate: true})
 
 </script>
 
