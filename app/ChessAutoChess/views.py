@@ -46,7 +46,8 @@ def auth(request):
         login(request, user)
         return JsonResponse(
             {'status': 'success',
-             'message': 'Authentication successfully, user found'})
+             'message': 'Authentication successfully, user found',
+             'token': token})
 
 
 @csrf_exempt
