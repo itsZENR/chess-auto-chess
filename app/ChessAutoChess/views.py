@@ -24,7 +24,7 @@ def auth(request):
     Аворизация и регистрация пользователя по токену
     '''
     token = request.headers.get('TOKEN')
-    if not token:
+    if token == 'undefined':
         token = uuid4()
     user = authenticate(username=token, password='mypassword')
 
