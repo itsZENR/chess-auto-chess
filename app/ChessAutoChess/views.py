@@ -89,6 +89,7 @@ class GameDetail(View):
     # @login_required
     def get(self, request, room_name):
         game = Game.objects.get(id=room_name)
+        ic(request.user)
         if not request.user == game.white_player:
             game.black_player = request.user
             game.save()

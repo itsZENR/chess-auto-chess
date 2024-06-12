@@ -9,9 +9,11 @@
 <script setup>
 import router from "@/router";
 import BaseButton from "@/components/ui/BaseButton";
-import {createRoom} from "@/api";
+import {createRoom, getAuth} from "@/api";
 import {ref} from "vue";
 
+
+getAuth()
 
 const idRoom = ref()
 
