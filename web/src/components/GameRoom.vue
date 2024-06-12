@@ -29,7 +29,7 @@ import GameRoomBoard from "@/components/GameRoomBoard";
 import GameRoomTable from "@/components/GameRoomTable";
 import GameRoomPopup from "@/components/GameRoomPopup";
 import {useWebsocket} from "@/components/composable/useWebsocket";
-import {getAuth} from "@/api/index.js";
+import {connectRoom, getAuth} from "@/api/index.js";
 import {getAccessToken} from "@/api/authCookie";
 
 function authorization() {
@@ -38,9 +38,12 @@ function authorization() {
     getAuth()
   }
 }
+
 authorization()
 
 const route = useRoute();
+
+connectRoom(route.params.idRoom)
 
 const {ws, isConnected} = connectWebsocket(route.params.idRoom)
 const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
