@@ -1,5 +1,5 @@
-import {useLogicChess} from "@/components/composable/useLogicChess";
 import {ref} from "vue";
+import {useLogicChess} from "@/components/composable/useLogicChess";
 
 export function useSettingChess(board, soundStep, gameStatus, ws, totalPoints) {
 
