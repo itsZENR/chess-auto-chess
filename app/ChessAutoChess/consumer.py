@@ -43,7 +43,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         self.engine = chess.engine.SimpleEngine.popen_uci(
             # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-            f'{self.engine}stockfish-ubuntu-x86-64/stockfish/stockfish-ubuntu-x86-64')
+            f'{self.engine}stockfish-ubuntu-x86-64/stockfish/' + \
+            'stockfish-ubuntu-x86-64')
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
@@ -115,9 +116,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         if message == 'Готов':
             # То получаем id пользователя нажавшего на кнопку
             user_id = self.scope['user'].id
+            ic(user_id)
             self.game = await db_s2a(Game.objects.get)(id=self.room_name)
             wpid = await db_s2a(lambda: self.game.white_player.id)()
             bpid = await db_s2a(lambda: self.game.black_player.id)()
+            ic(self.game, wpid, bpid)
 
             # И в этой игре уже подключенно два пользователя
             # и тот кто нажал кнопку "готов" является одним из двух игроков
