@@ -11,8 +11,11 @@ import router from "@/router";
 import BaseButton from "@/components/ui/BaseButton";
 import {createRoom, getAuth} from "@/api";
 import {ref} from "vue";
+import {useAuthorization} from "@/components/composable/useAuthorization";
 
-getAuth()
+
+const {authorization} = useAuthorization()
+authorization()
 
 const idRoom = ref()
 
