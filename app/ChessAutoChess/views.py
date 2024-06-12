@@ -19,17 +19,6 @@ from django.views.decorators.csrf import (
 
 from icecream import ic
 
-import string
-import random
-
-
-def generate_token(length=8):
-    # Определяем набор символов: буквы и цифры
-    characters = string.ascii_letters + string.digits
-    # Генерируем токен случайных символов указанной длины
-    token = ''.join(random.choice(characters) for _ in range(length))
-    return token
-
 
 @csrf_exempt
 def auth(request):
@@ -40,7 +29,6 @@ def auth(request):
     token = request.headers.get('TOKEN')
     ic(token)
     if not token:
-        token = str(generate_token())
         token = uuid4()
     user = authenticate(username=token, password='mypassword')
     ic(token)
@@ -87,7 +75,6 @@ class GameDetail(View):
     # @login_required
     def get(self, request, room_name):
         game = Game.objects.get(id=room_name)
-        ic(request.user)
         if not request.user == game.white_player:
             game.black_player = request.user
             game.save()
