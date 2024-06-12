@@ -73,9 +73,7 @@ def room(request):
     Создание комнаты
     '''
     game = Game(white_player=request.user, black_player=request.user)
-    if not request.user == game.white_player:
-            game.black_player = request.user
-            game.save()
+    game.save()
     return JsonResponse(
         {'status': 'success',
          'message': 'Create successfully',
