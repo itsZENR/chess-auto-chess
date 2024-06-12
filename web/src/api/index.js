@@ -42,3 +42,13 @@ export const createRoom = async () => {
         throw error;
     }
 };
+
+export const connectRoom = async (idRoom) => {
+    try {
+        const response = await api.get(`/api/room/connect/${idRoom}/`);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+};
