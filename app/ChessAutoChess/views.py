@@ -17,17 +17,33 @@ from django.views.decorators.csrf import (
                                     csrf_exempt,
 )
 
+from icecream import ic
+
+import string
+import random
+
+
+def generate_token(length=8):
+    # Определяем набор символов: буквы и цифры
+    characters = string.ascii_letters + string.digits
+    # Генерируем токен случайных символов указанной длины
+    token = ''.join(random.choice(characters) for _ in range(length))
+    return token
+
 
 @csrf_exempt
 def auth(request):
     '''
     Аворизация и регистрация пользователя по токену
     '''
+    # token = 'undefined'
     token = request.headers.get('TOKEN')
-    if token == 'undefined':
+    ic(token)
+    if not token:
+        token = str(generate_token())
         token = uuid4()
     user = authenticate(username=token, password='mypassword')
-
+    ic(token)
     if user is None:
         user = User.objects.create_user(token,
                                         'myemail@crazymail.com',
