@@ -3,7 +3,7 @@
 '''
 from uuid import uuid4
 
-
+from django.views.generic.base import View
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -73,11 +73,29 @@ def room(request):
     Создание комнаты
     '''
     game = Game(white_player=request.user, black_player=request.user)
-    game.save()
+    if not request.user == game.white_player:
+            game.black_player = request.user
+            game.save()
     return JsonResponse(
         {'status': 'success',
          'message': 'Create successfully',
          'room_name': game.pk})
+
+
+class GameDetail(View):
+# class GameDetail(DetailView):
+    '''Отдельная страница игры'''
+
+    # @login_required
+    def get(self, request, room_name):
+        game = Game.objects.get(id=room_name)
+        if not request.user == game.white_player:
+            game.black_player = request.user
+            game.save()
+        return JsonResponse(
+            {'status': 'success',
+             'message': 'Create successfully',
+             'room_name': game.pk})
 
 
 class UserView(ModelViewSet):
