@@ -116,11 +116,9 @@ class GameConsumer(AsyncWebsocketConsumer):
         if message == 'Готов':
             # То получаем id пользователя нажавшего на кнопку
             user_id = self.scope['user'].id
-            ic(user_id)
             self.game = await db_s2a(Game.objects.get)(id=self.room_name)
             wpid = await db_s2a(lambda: self.game.white_player.id)()
             bpid = await db_s2a(lambda: self.game.black_player.id)()
-            ic(self.game, wpid, bpid)
 
             # И в этой игре уже подключенно два пользователя
             # и тот кто нажал кнопку "готов" является одним из двух игроков
