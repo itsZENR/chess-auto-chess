@@ -30,9 +30,15 @@ import GameRoomTable from "@/components/GameRoomTable";
 import GameRoomPopup from "@/components/GameRoomPopup";
 import {useWebsocket} from "@/components/composable/useWebsocket";
 import {getAuth} from "@/api/index.js";
+import {getAccessToken} from "@/api/authCookie";
 
-
-getAuth()
+function authorization() {
+  const token = getAccessToken();
+  if (!token) {
+    getAuth()
+  }
+}
+authorization()
 
 const route = useRoute();
 
