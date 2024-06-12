@@ -1,7 +1,7 @@
 import {ref} from "vue";
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
 
-export function useLogicBoardFunctions() {
+export function useLogicBoardFunctions(soundStep) {
 
     function updateBoard(board, position) {
         if (typeof position === 'object') {
@@ -55,10 +55,10 @@ export function useLogicBoardFunctions() {
             return "Некорректный ход";
         }
 
-        playPlacementSound();
+        playPlacementSound(soundStep);
 
         // Массив всех сделанных движком ходов
-        moveArray.push(move);
+        moveArray.value.push(move);
 
         // Разбиваем строку на начальное и конечное положение фигуры
         const source = move.substring(0, 2);
