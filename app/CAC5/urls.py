@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', auth),
     path('api/room/', room),
-    path('api/room/<int:room_name>/', login_required(GameDetail.as_view())),
+    path('api/room/connect/<int:room_name>/', login_required(GameDetail.as_view())),
 ]
 
 urlpatterns += router.urls
