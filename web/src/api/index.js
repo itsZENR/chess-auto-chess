@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {getCookie, getAccessToken, setAccessToken} from "@/api/authCookie";
-import Cookies from "js-cookie";
 
 
 const api = axios.create({
