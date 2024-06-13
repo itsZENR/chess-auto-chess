@@ -16,10 +16,11 @@
       <v-card
           max-width="500"
           min-width="300"
-          color="green-darken-3"
-          class="d-flex justify-center"
+          color="green-darken-3 pt-5"
       >
-        <v-card-title>
+        <v-card-title
+            class="d-flex justify-center"
+        >
           {{ resultMessage }}
         </v-card-title>
         <v-card-actions class="d-flex justify-end">

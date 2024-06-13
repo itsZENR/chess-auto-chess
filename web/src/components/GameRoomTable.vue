@@ -18,7 +18,7 @@
     </v-row>
     <v-divider class="my-4"/>
     <v-table
-        height="300px"
+        height="400px"
         fixed-header
     >
       <thead>
@@ -42,8 +42,7 @@
 
         <td class="d-flex ma-0 pa-0" style="height: 35px">
           <base-text
-              style="color: grey"
-              class="mr-3"
+              style="color: grey; width: 35px"
           >
             {{ index + 1 }}.
           </base-text>
@@ -51,9 +50,13 @@
             <template v-for="(move, moveIndex) in pair" :key="moveIndex">
               <span
                   v-if="moveIndex > 0"
-                  class="mr-8"
+                  class="mr-6"
               ></span>
-              {{ formatMove(move) }}
+              <span
+                  style="display: inline-block;width: 65px"
+              >
+                {{ formatMove(move) }}
+              </span>
             </template>
           </base-text>
         </td>
