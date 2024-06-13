@@ -97,6 +97,8 @@ watch(allStepsMove.value, () => {
   display: flex;
   justify-content: center;
   padding: 0 !important;
+  width: calc(100% - 1px);
+  background: #3e3e3e;
 }
 
 .spare-pieces-7492f:first-child, .spare-pieces-7492f img:first-child {
