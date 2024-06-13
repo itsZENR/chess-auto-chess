@@ -76,7 +76,7 @@ watch(gameStart, () => {
   emit('updateGameStatus', gameStart.value);
 })
 
-watch(gameResult.value, () => {
+watch(gameResult, () => {
   emit('updateGameResult', gameResult.value);
 })
 

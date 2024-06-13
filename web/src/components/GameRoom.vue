@@ -4,10 +4,12 @@
   </v-row>
   <v-row v-else class="justify-center">
     <game-room-popup
+        class="position-absolute"
         :is-show="isPopupInvite"
         @popup-close="popupClose"
     />
     <game-room-popup
+        class="position-absolute"
         :is-show="isPopupGameFinish"
         @popup-close="popupClose"
     >
@@ -15,6 +17,7 @@
           max-width="500"
           min-width="300"
           color="green-darken-3"
+          class="d-flex justify-center"
       >
         <v-card-title>
           {{ resultMessage }}
