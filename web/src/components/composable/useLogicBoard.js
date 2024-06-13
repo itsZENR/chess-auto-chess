@@ -24,11 +24,6 @@ export function useLogicBoard(soundStep) {
         checkGameStatus(data.game_status, gameResult)
 
         if (data.move != undefined) {
-
-            // // Делаем кнопку неактивной
-            // saveButton.disabled = true;
-
-            // console.log("move: " + data.move);
             boardMoveEngine(data.move, game, board);
         }
 
