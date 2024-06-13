@@ -77,5 +77,5 @@ export function useLogicBoardFunctions(soundStep) {
         board.value.position(game.fen());
     }
 
-    return {updateBoard, gameResult, boardMoveEngine}
+    return {updateBoard, checkGameStatus, boardMoveEngine}
 }
