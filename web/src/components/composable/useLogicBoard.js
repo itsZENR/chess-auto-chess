@@ -2,9 +2,9 @@ import {useLogicBoardFunctions} from "@/components/composable/useLogicBoardFunct
 
 export function useLogicBoard(soundStep) {
 
-    const {updateBoard, gameResult, boardMoveEngine} = useLogicBoardFunctions(soundStep)
+    const {updateBoard, checkGameStatus, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
-    const logicBoard = (data, board, game, gameStart) => {
+    const logicBoard = (data, board, game, gameStart, gameResult) => {
         console.log("==New message:==", data);
 
         let color = undefined;
@@ -22,7 +22,7 @@ export function useLogicBoard(soundStep) {
             console.log("gameStatus:", data.game_status);
         }
 
-        gameResult(data.game_status)
+        checkGameStatus(data.game_status, gameResult)
 
         if (data.move != undefined) {
 
