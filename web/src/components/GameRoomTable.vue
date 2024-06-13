@@ -7,6 +7,7 @@
             :loading="loading"
             :color="isBtnColor"
             :variantBtn="isBtnVariants"
+            :disabled="gameStatus"
         >
           Готов
         </base-button>
@@ -57,14 +58,15 @@
 <script setup>
 import BaseButton from "@/components/ui/BaseButton";
 import BaseText from "@/components/ui/BaseText"
-import {ref, toRefs} from "vue";
+import {ref, toRefs, watch} from "vue";
 
 
 const props = defineProps({
   totalPoints: Number,
+  gameStatus: Boolean,
 });
 
-const {totalPoints} = toRefs(props);
+const {totalPoints, gameStatus} = toRefs(props);
 
 const emit = defineEmits(['clickReady'])
 
@@ -119,6 +121,13 @@ const changeActiveBtn = (isReady, isBtnVariants, isBtnColor) => {
     isBtnColor.value = 'primary'
   }
 }
+
+watch(gameStatus, () => {
+  if (gameStatus.value) {
+    isBtnVariants.value = 'outlined'
+    isBtnColor.value = 'primary'
+  }
+})
 
 const load = () => {
   loading.value = true

@@ -12,10 +12,13 @@
         :ws="ws"
         :message="messageWebsocket"
         :orientation="isWhitePlayer"
+        :game-status="gameStatus"
         @points="updateTotalPoints"
+        @update-game-status="updateGameStatus"
     />
     <game-room-table
         :total-points="totalPoints"
+        :game-status="gameStatus"
         @click-ready="changeReady"
     />
   </v-row>
@@ -47,6 +50,11 @@ receivedWebsocket(ws)
 const totalPoints = ref(null)
 const updateTotalPoints = (points) => {
   totalPoints.value = points
+}
+
+const gameStatus = ref(false);
+const updateGameStatus = (v) => {
+  gameStatus.value = v
 }
 
 const isWhitePlayer = ref(true)
