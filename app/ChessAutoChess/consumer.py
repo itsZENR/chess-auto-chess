@@ -8,11 +8,14 @@ import chess
 import chess.engine
 from icecream import ic
 from .models import Game
+from .utils import generate_command, store_command, get_command
 import time
 
 
 class GameConsumer(AsyncWebsocketConsumer):
-    engine = '/app/ChessAutoChess/engine/'
+    # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
+    engine = '/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/' + \
+            'stockfish/stockfish-ubuntu-x86-64'
     # Создаем объект шахматной доски
     board = chess.Board()
 
@@ -41,11 +44,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.board.set_piece_at(chess.H8, chess.Piece(chess.KING, chess.BLACK))
         self.board.set_piece_at(chess.A1, chess.Piece(chess.KING, chess.WHITE))
 
-        self.engine = chess.engine.SimpleEngine.popen_uci(
-            # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-            f'{self.engine}stockfish-ubuntu-x86-64/stockfish/' + \
-            'stockfish-ubuntu-x86-64')
-
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
@@ -54,6 +52,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
         # Добавление клиента в множество подключенных клиентов
         ic(self.connected_clients)
+
         if self.room_name not in self.connected_clients:
             self.connected_clients[self.room_name] = []
 
@@ -67,6 +66,18 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
+
+        #  # Generate and store command if not already stored
+        # command = get_command(self.room_name)
+        # if command is None:
+        #     command = generate_command()
+        #     ic(command)
+        #     store_command(self.room_name, command)
+
+        # Send command to the player
+        # await self.send(text_data=json.dumps({
+        #     'command': command
+        # }))
 
         if len(self.connected_clients[self.room_name]) == 2:
 
@@ -84,10 +95,18 @@ class GameConsumer(AsyncWebsocketConsumer):
         self.connected_clients[self.room_name].remove(self.scope["user"].id)
         ic(self.connected_clients)
 
+        if not self.connected_clients[self.room_name]:
+            await self.stop_engine()
+
         # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
+
+    async def stop_engine(self):
+        if hasattr(self, 'engine'):
+            self.engine.quit()
+        self.game_start = False
 
     # Receive message from WebSocket
     async def receive(self, text_data):
@@ -113,7 +132,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                 {"color_is_white": self.color_is_white}))
 
         # Если была нажата кнопка у одного из пользоваетлей
-        if message == 'Готов':
+        elif message == 'Готов':
             # То получаем id пользователя нажавшего на кнопку
             user_id = self.scope['user'].id
             self.game = await db_s2a(Game.objects.get)(id=self.room_name)
@@ -135,34 +154,8 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             if len(self.ready_player[self.room_name]) == 2 \
                     and not self.game_start:
-
                 self.game_start = True
-                while self.board.outcome() is None:
-                    start = time.time()
-                    result = self.engine.play(
-                        self.board, chess.engine.Limit(time=1.0)
-                    )
-                    end = time.time()
-                    if (end - start) * 10 ** 3 < 1000:
-                        time.sleep(1)
-                    move = result.move
-
-                    # Двигаем шахматные фигуры
-                    # в соответствии с ответом движка Stockfish
-                    self.board.push(move)
-
-                    # Отправляем собщение в группу
-                    await self.channel_layer.group_send(
-                        self.room_group_name, {"type": "move.message",
-                                               "move": str(move),
-                                               'user': self.scope['user'].id
-                                               }
-                    )
-
-                    # Отправляем сообщение пользователю который запустил игру
-                    await self.send(text_data=json.dumps({"move": str(move)}))
-
-                result = self.board.outcome().result()
+                await self.run_engine()
 
         else:
             # Send message to room group
@@ -171,6 +164,43 @@ class GameConsumer(AsyncWebsocketConsumer):
                                        'message': message,
                                        'user': self.scope['user'].id
                                        })
+
+    async def run_engine(self):
+        self.engine = chess.engine.SimpleEngine.popen_uci(self.engine)
+
+        while self.board.outcome() is None:
+            start = time.time()
+            result = self.engine.play(
+                self.board, chess.engine.Limit(time=1.0)
+            )
+            end = time.time()
+
+            if (end - start) * 10 ** 3 < 1000:
+                time.sleep(1)
+
+            move = result.move
+
+            # Двигаем шахматные фигуры
+            # в соответствии с ответом движка Stockfish
+            self.board.push(move)
+
+            # Отправляем собщение в группу
+            await self.channel_layer.group_send(
+                self.room_group_name, {"type": "move.message",
+                                        "move": str(move),
+                                        'user': self.scope['user'].id
+                                        }
+            )
+
+            # Отправляем сообщение пользователю который запустил игру
+            await self.send(text_data=json.dumps({"move": str(move)}))
+
+        self.engine.quit()
+        result = self.board.outcome().result()
+        await self.channel_layer.group_send(
+            self.room_group_name, {'type': 'game.status',
+                                   'message': result}
+        )
 
         if self.game_start:
             ic(result)
@@ -231,7 +261,6 @@ class GameConsumer(AsyncWebsocketConsumer):
         user_id = event['user']
 
         if isinstance(message, list):
-
             source = message[0].upper()
             piece = message[1]
             target = message[2].upper()
