@@ -8,7 +8,7 @@
       Игрок {{ orientation ? "1" : "2" }}
     </base-text>
   </v-col>
-  <audio ref="soundStep">
+  <audio class="position-absolute" ref="soundStep">
     <source :src="soundSrc" type="audio/mpeg">
   </audio>
 </template>
