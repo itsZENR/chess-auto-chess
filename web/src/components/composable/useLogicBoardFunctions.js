@@ -38,7 +38,6 @@ export function useLogicBoardFunctions(soundStep) {
 
     function EndGame(gameStatus, gameResult) {
         gameResult.value = gameStatus
-        console.log("Игра окончена!", gameResult.value)
     }
 
 

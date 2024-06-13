@@ -13,8 +13,10 @@
         :message="messageWebsocket"
         :orientation="isWhitePlayer"
         :game-start="gameStart"
+        :game-result="gameResult"
         @points="updateTotalPoints"
         @update-game-status="updateGameStatus"
+        @update-game-result="updateGameResult"
     />
     <game-room-table
         :total-points="totalPoints"
@@ -55,6 +57,12 @@ const updateTotalPoints = (points) => {
 const gameStart = ref(false);
 const updateGameStatus = (v) => {
   gameStart.value = v
+}
+
+const gameResult = ref(null)
+const updateGameResult = (v) => {
+  gameResult.value = v
+  console.log("Игра окончена!:", gameResult.value)
 }
 
 const isWhitePlayer = ref(true)
