@@ -35,13 +35,16 @@
         :orientation="isWhitePlayer"
         :game-start="gameStart"
         :game-result="gameResult"
-        @points="updateTotalPoints"
+        :all-steps-move="allStepsMove"
+        @update-points="updateTotalPoints"
         @update-game-status="updateGameStatus"
         @update-game-result="updateGameResult"
+        @update-game-steps="updateSteps"
     />
     <game-room-table
         :total-points="totalPoints"
         :game-start="gameStart"
+        :all-steps-move="allStepsMove"
         @click-ready="changeReady"
     />
   </v-row>
@@ -84,7 +87,6 @@ const gameResult = ref(null)
 const updateGameResult = (v) => {
   gameResult.value = v
   isPopupGameFinish.value = true
-  console.log("Игра окончена!:", gameResult.value)
 }
 
 const resultList = {
@@ -97,6 +99,11 @@ const resultList = {
 const resultMessage = computed(() => {
   return resultList[gameResult.value] || "Неизвестный результат";
 });
+
+const allStepsMove = ref([]);
+const updateSteps = (v) => {
+  allStepsMove.value = v
+};
 
 const isWhitePlayer = ref(true)
 const isPopupInvite = ref(true)

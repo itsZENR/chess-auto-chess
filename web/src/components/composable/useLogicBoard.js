@@ -4,7 +4,7 @@ export function useLogicBoard(soundStep) {
 
     const {updateBoard, checkGameStatus, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
-    const logicBoard = (data, board, game, gameStart, gameResult) => {
+    const logicBoard = (data, board, game, gameStart, gameResult, allStepsMove) => {
         console.log("New message:==", data);
 
         if (data.message === "Готов") {
@@ -24,7 +24,7 @@ export function useLogicBoard(soundStep) {
         checkGameStatus(data.game_status, gameResult)
 
         if (data.move != undefined) {
-            boardMoveEngine(data.move, game, board);
+            boardMoveEngine(data.move, game, board, allStepsMove);
         }
 
         if (data.message != undefined) {
