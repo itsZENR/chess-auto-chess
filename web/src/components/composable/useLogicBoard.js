@@ -5,12 +5,11 @@ export function useLogicBoard(soundStep) {
     const {updateBoard, checkGameStatus, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
     const logicBoard = (data, board, game, gameStart, gameResult) => {
-        console.log("==New message:==", data);
-
-        let color = undefined;
-        let playerPoint = undefined;
+        console.log("New message:==", data);
 
         if (data.message === "Готов") {
+            gameStart.value = true;
+
             // Записываем позицию доски
             let boardFen = board.value.fen();
             boardFen = boardFen + " " + "w - - 0 1";
@@ -25,8 +24,6 @@ export function useLogicBoard(soundStep) {
         checkGameStatus(data.game_status, gameResult)
 
         if (data.move != undefined) {
-
-            gameStart.value = true;
 
             // // Делаем кнопку неактивной
             // saveButton.disabled = true;
