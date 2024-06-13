@@ -22,7 +22,7 @@ export function useLogicBoard(soundStep) {
             console.log("gameStatus:", data.game_status);
         }
 
-        gameResult(data.gameStatus)
+        gameResult(data.game_status)
 
         if (data.move != undefined) {
 
