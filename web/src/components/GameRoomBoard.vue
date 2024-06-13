@@ -1,11 +1,11 @@
 <template>
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
     <base-text>
-      Игрок 1
+      Игрок {{ !orientation ? "1" : "2" }}
     </base-text>
     <div ref="board" class="board"></div>
     <base-text>
-      Игрок 2
+      Игрок {{ orientation ? "1" : "2" }}
     </base-text>
   </v-col>
   <audio ref="soundStep">
