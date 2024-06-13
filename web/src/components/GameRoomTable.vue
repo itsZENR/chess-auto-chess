@@ -23,8 +23,11 @@
     >
       <thead>
       <tr>
-        <th class="ma-0 pa-0">
+        <th
+            v-if="allStepsMove.length"
+            class="ma-0 pa-0">
           <base-text
+
               :min-size="18"
               :max-size="22"
           >
@@ -33,19 +36,25 @@
           <v-divider class="mt-4"/>
         </th>
       </tr>
-
       </thead>
       <tbody>
-      <tr
-          v-for="(item, index) in allStepsMove"
-          :key="index"
-      >
-        <td
-            class="ma-0 pa-0"
-            style="height: 35px"
-        >
+      <tr v-for="(pair, index) in stepsInPairs" :key="index">
+
+        <td class="d-flex ma-0 pa-0" style="height: 35px">
+          <base-text
+              style="color: grey"
+              class="mr-3"
+          >
+            {{ index + 1 }}.
+          </base-text>
           <base-text>
-            {{ item }}
+            <template v-for="(move, moveIndex) in pair" :key="moveIndex">
+              <span
+                  v-if="moveIndex > 0"
+                  class="mr-8"
+              ></span>
+              {{ formatMove(move) }}
+            </template>
           </base-text>
         </td>
       </tr>
@@ -57,7 +66,7 @@
 <script setup>
 import BaseButton from "@/components/ui/BaseButton";
 import BaseText from "@/components/ui/BaseText"
-import {ref, toRefs, watch} from "vue";
+import {ref, toRefs, watch, computed} from "vue";
 
 
 const props = defineProps({
@@ -106,5 +115,19 @@ const load = () => {
     loading.value = false
   }, 1000)
 };
+
+const stepsInPairs = computed(() => {
+  const pairs = [];
+  for (let i = 0; i < allStepsMove.value.length; i += 2) {
+    const pair = allStepsMove.value.slice(i, i + 2);
+    pairs.push(pair);
+  }
+  return pairs;
+});
+
+function formatMove(move) {
+  const parts = move.match(/.{2}/g);
+  return `${parts[0]} -> ${parts[1]}`;
+}
 
 </script>
