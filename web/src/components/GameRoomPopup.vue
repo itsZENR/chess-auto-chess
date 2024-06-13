@@ -5,31 +5,33 @@
         width="auto"
         persistent
     >
-      <v-card
-          max-width="500"
-          title="Ссылка на приглашение:"
-      >
-        <template v-slot:actions>
-          <input
-              ref="urlElement"
-              :value="urlValue"
-              type="text"
-              readonly
-              style="color: grey"
-          >
-          <v-btn
-              class="mr-2"
-              @click="copyText()"
-          >
-            <v-icon>mdi-content-copy</v-icon>
-          </v-btn>
-          <v-btn
-              class="ms-auto"
-              text="Закрыть"
-              @click="popupClose"
-          ></v-btn>
-        </template>
-      </v-card>
+      <slot>
+        <v-card
+            max-width="500"
+            title="Ссылка на приглашение:"
+        >
+          <template v-slot:actions>
+            <input
+                ref="urlElement"
+                :value="urlValue"
+                type="text"
+                readonly
+                style="color: grey"
+            >
+            <v-btn
+                class="mr-2"
+                @click="copyText()"
+            >
+              <v-icon>mdi-content-copy</v-icon>
+            </v-btn>
+            <v-btn
+                class="ms-auto"
+                text="Закрыть"
+                @click="popupClose"
+            ></v-btn>
+          </template>
+        </v-card>
+      </slot>
     </v-dialog>
   </div>
 </template>
