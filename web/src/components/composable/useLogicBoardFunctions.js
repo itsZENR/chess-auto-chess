@@ -17,18 +17,18 @@ export function useLogicBoardFunctions(soundStep) {
         switch (gameStatus) {
             case "1-0":
                 // White winner
-                EndGame();
+                EndGame(gameStatus);
                 break;
             case "0-1":
                 // Black winner
-                EndGame();
+                EndGame(gameStatus);
                 break;
             case "1/2-1/2":
                 // Tie
-                EndGame();
+                EndGame(gameStatus);
                 break;
             case "none":
-                EndGame();
+                EndGame(gameStatus);
                 break;
             default:
                 break;
@@ -36,8 +36,8 @@ export function useLogicBoardFunctions(soundStep) {
 
     }
 
-    function EndGame() {
-        console.log("Игра окончена!")
+    function EndGame(gameStatus) {
+        console.log("Игра окончена!", gameStatus)
     }
 
 
