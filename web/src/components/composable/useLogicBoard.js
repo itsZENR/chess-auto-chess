@@ -26,7 +26,6 @@ export function useLogicBoard(soundStep) {
 
         if (data.move != undefined) {
 
-            // Обновляем статус игры
             gameStatus.value = true;
 
             // // Делаем кнопку неактивной

@@ -28,19 +28,20 @@ const props = defineProps({
   ws: Object,
   message: null,
   orientation: Boolean,
+  gameStatus: Boolean,
 });
 
-const {isReady, ws, message, orientation} = toRefs(props);
+const {isReady, ws, message, orientation, gameStatus} = toRefs(props);
 
 
 const emit = defineEmits({
-  'points': Number
+  'points': Number,
+  'updateGameStatus': Boolean,
 })
 
 
 const board = ref(null);
 const soundStep = ref(null);
-const gameStatus = ref(false);
 const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
@@ -65,6 +66,10 @@ watch(orientation, () => {
 watch(totalPoints, () => {
   emit('points', totalPoints.value);
 }, {immediate: true})
+
+watch(gameStatus, () => {
+  emit('updateGameStatus', gameStatus.value);
+})
 
 </script>
 
