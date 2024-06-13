@@ -69,7 +69,6 @@ def room(request):
 
 
 class GameDetail(View):
-# class GameDetail(DetailView):
     '''Отдельная страница игры'''
 
     # @login_required
