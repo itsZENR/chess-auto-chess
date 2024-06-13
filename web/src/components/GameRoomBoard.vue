@@ -29,14 +29,16 @@ const props = defineProps({
   message: null,
   orientation: Boolean,
   gameStart: Boolean,
+  gameResult: String,
 });
 
-const {isReady, ws, message, orientation, gameStart} = toRefs(props);
+const {isReady, ws, message, orientation, gameStart, gameResult} = toRefs(props);
 
 
 const emit = defineEmits({
   'points': Number,
   'updateGameStatus': Boolean,
+  'updateGameResult': String,
 })
 
 
@@ -46,7 +48,6 @@ const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
 const logicBoardFunc = ref()
-const gameResult = ref(null)
 
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
@@ -70,6 +71,10 @@ watch(totalPoints, () => {
 
 watch(gameStart, () => {
   emit('updateGameStatus', gameStart.value);
+})
+
+watch(gameResult, () => {
+  emit('updateGameResult', gameResult.value);
 })
 
 </script>
