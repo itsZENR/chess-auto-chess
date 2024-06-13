@@ -7,7 +7,7 @@
             :loading="loading"
             :color="isBtnColor"
             :variantBtn="isBtnVariants"
-            :disabled="gameStatus"
+            :disabled="gameStart"
         >
           Готов
         </base-button>
@@ -63,10 +63,10 @@ import {ref, toRefs, watch} from "vue";
 
 const props = defineProps({
   totalPoints: Number,
-  gameStatus: Boolean,
+  gameStart: Boolean,
 });
 
-const {totalPoints, gameStatus} = toRefs(props);
+const {totalPoints, gameStart} = toRefs(props);
 
 const emit = defineEmits(['clickReady'])
 
@@ -122,8 +122,8 @@ const changeActiveBtn = (isReady, isBtnVariants, isBtnColor) => {
   }
 }
 
-watch(gameStatus, () => {
-  if (gameStatus.value) {
+watch(gameStart, () => {
+  if (gameStart.value) {
     isBtnVariants.value = 'outlined'
     isBtnColor.value = 'primary'
   }

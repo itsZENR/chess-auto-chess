@@ -28,10 +28,10 @@ const props = defineProps({
   ws: Object,
   message: null,
   orientation: Boolean,
-  gameStatus: Boolean,
+  gameStart: Boolean,
 });
 
-const {isReady, ws, message, orientation, gameStatus} = toRefs(props);
+const {isReady, ws, message, orientation, gameStart} = toRefs(props);
 
 
 const emit = defineEmits({
@@ -50,11 +50,11 @@ const logicBoardFunc = ref()
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
   logicBoardFunc.value = logicBoard
-  useSettingChess(board.value, soundStep.value, gameStatus.value, ws, totalPoints);
+  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints);
 });
 
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStatus)
+  logicBoardFunc.value(message.value, board.value, game, gameStart)
 })
 
 watch(orientation, () => {
@@ -67,8 +67,8 @@ watch(totalPoints, () => {
   emit('points', totalPoints.value);
 }, {immediate: true})
 
-watch(gameStatus, () => {
-  emit('updateGameStatus', gameStatus.value);
+watch(gameStart, () => {
+  emit('updateGameStatus', gameStart.value);
 })
 
 </script>

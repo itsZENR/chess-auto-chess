@@ -4,7 +4,7 @@ export function useLogicBoard(soundStep) {
 
     const {updateBoard, gameResult, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
-    const logicBoard = (data, board, game, gameStatus) => {
+    const logicBoard = (data, board, game, gameStart) => {
         console.log("==New message:==", data);
 
         let color = undefined;
@@ -26,7 +26,7 @@ export function useLogicBoard(soundStep) {
 
         if (data.move != undefined) {
 
-            gameStatus.value = true;
+            gameStart.value = true;
 
             // // Делаем кнопку неактивной
             // saveButton.disabled = true;
