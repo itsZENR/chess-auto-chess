@@ -31,7 +31,7 @@
               :min-size="18"
               :max-size="22"
           >
-            Ход: {{ allStepsMove.length }}
+            Ход: {{ stepsInPairs.length }}
           </base-text>
           <v-divider class="mt-4"/>
         </th>
