@@ -28,17 +28,16 @@ const props = defineProps({
   ws: Object,
   message: null,
   orientation: Boolean,
-  gameStart: Boolean,
-  gameResult: String,
 });
 
-const {isReady, ws, message, orientation, gameStart, gameResult} = toRefs(props);
+const {isReady, ws, message, orientation} = toRefs(props);
 
 
 const emit = defineEmits({
-  'points': Number,
+  'updatePoints': Number,
   'updateGameStatus': Boolean,
   'updateGameResult': String,
+  'updateGameSteps': Array,
 })
 
 
@@ -47,6 +46,10 @@ const soundStep = ref(null);
 const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
+const gameStart = ref(false);
+const gameResult = ref(null)
+const allStepsMove = ref([]);
+
 const logicBoardFunc = ref()
 
 onMounted(() => {
@@ -56,7 +59,7 @@ onMounted(() => {
 });
 
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult)
+  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult, allStepsMove)
 })
 
 watch(orientation, () => {
@@ -66,15 +69,19 @@ watch(orientation, () => {
 })
 
 watch(totalPoints, () => {
-  emit('points', totalPoints.value);
+  emit('updatePoints', totalPoints.value);
 }, {immediate: true})
 
 watch(gameStart, () => {
   emit('updateGameStatus', gameStart.value);
 })
 
-watch(gameResult, () => {
+watch(gameResult.value, () => {
   emit('updateGameResult', gameResult.value);
+})
+
+watch(allStepsMove.value, () => {
+  emit('updateGameSteps', allStepsMove.value);
 })
 
 </script>

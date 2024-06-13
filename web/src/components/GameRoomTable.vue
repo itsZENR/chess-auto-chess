@@ -28,7 +28,7 @@
               :min-size="18"
               :max-size="22"
           >
-            Ходы
+            Ход: {{ allStepsMove.length }}
           </base-text>
           <v-divider class="mt-4"/>
         </th>
@@ -37,7 +37,7 @@
       </thead>
       <tbody>
       <tr
-          v-for="(item, index) in desserts"
+          v-for="(item, index) in allStepsMove"
           :key="index"
       >
         <td
@@ -45,10 +45,9 @@
             style="height: 35px"
         >
           <base-text>
-            {{ item.step }}
+            {{ item }}
           </base-text>
         </td>
-        <!--          <td>{{ item.calories }}</td>-->
       </tr>
       </tbody>
     </v-table>
@@ -64,42 +63,14 @@ import {ref, toRefs, watch} from "vue";
 const props = defineProps({
   totalPoints: Number,
   gameStart: Boolean,
+  allStepsMove: Array,
 });
 
-const {totalPoints, gameStart} = toRefs(props);
+const {totalPoints, gameStart, allStepsMove} = toRefs(props);
 
 const emit = defineEmits(['clickReady'])
 
 
-const desserts = ref([
-  {
-    step: 'a1a2',
-  },
-  {
-    step: 'b2b3',
-  },
-  {
-    step: 'a3a4',
-  },
-  {
-    step: 'a3a4',
-  },
-  {
-    step: 'b3',
-  },
-  {
-    step: 'b3',
-  },
-  {
-    step: 'b3',
-  },
-  {
-    step: 'b3',
-  },
-  {
-    step: 'b3',
-  },
-])
 const loading = ref(false)
 const isReady = ref(false)
 const isBtnVariants = ref('outlined')

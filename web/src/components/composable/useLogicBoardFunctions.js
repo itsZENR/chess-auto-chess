@@ -1,12 +1,9 @@
-import {ref} from "vue";
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
 
 export function useLogicBoardFunctions(soundStep) {
 
     function updateBoard(board, position) {
         if (typeof position === 'object') {
-            console.log("position:", position);
-
             board.value.position(position);
             // Хранение позиций в sessionStorage
             // SessionManager.storageBoardPosition(position);
@@ -41,12 +38,10 @@ export function useLogicBoardFunctions(soundStep) {
     }
 
 
-    // Все ходы сделанные движком
-    const moveArray = ref([]);
     let updatePiece = "q";
     const {playPlacementSound} = useFunctionsChess()
 
-    function boardMoveEngine(move, game, board) {
+    function boardMoveEngine(move, game, board, allStepsMove) {
 
         // Проверяем длину строки, чтобы убедиться, что она корректна
         if (move.length == 5) {
@@ -58,14 +53,11 @@ export function useLogicBoardFunctions(soundStep) {
         playPlacementSound(soundStep);
 
         // Массив всех сделанных движком ходов
-        moveArray.value.push(move);
+        allStepsMove.value.push(move);
 
         // Разбиваем строку на начальное и конечное положение фигуры
         const source = move.substring(0, 2);
         const target = move.substring(2, 4);
-
-        // Ходы в истории HTML, после начала игры
-        // createStepElement(source, target, moveArray.length);
 
         // ход на доске
         game.move({
