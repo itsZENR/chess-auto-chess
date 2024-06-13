@@ -46,6 +46,7 @@ const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
 const logicBoardFunc = ref()
+const gameResult = ref(null)
 
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
@@ -54,7 +55,7 @@ onMounted(() => {
 });
 
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStart)
+  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult)
 })
 
 watch(orientation, () => {
