@@ -25,7 +25,6 @@ export function useLogicBoard(soundStep) {
         gameResult(data.gameStatus)
 
         if (data.move != undefined) {
-            console.log("data.move", data.move)
 
             // Обновляем статус игры
             gameStatus.value = true;
