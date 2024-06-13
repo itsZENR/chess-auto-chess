@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
 from rest_framework.viewsets import ModelViewSet
-from ChessAutoChess.models import Game
-from ChessAutoChess.serializers import UserSerializer
+from .models import Game
+from .serializers import UserSerializer
 from django.views.decorators.csrf import (
                                     # ensure_csrf_cookie,
                                     csrf_exempt,
