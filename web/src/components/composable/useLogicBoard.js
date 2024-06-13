@@ -1,8 +1,8 @@
 import {useLogicBoardFunctions} from "@/components/composable/useLogicBoardFunctions";
 
-export function useLogicBoard() {
+export function useLogicBoard(soundStep) {
 
-    const {updateBoard, gameResult, boardMoveEngine} = useLogicBoardFunctions()
+    const {updateBoard, gameResult, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
     const logicBoard = (data, board, game, gameStatus) => {
         console.log("==New message:==", data);
