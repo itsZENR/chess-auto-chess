@@ -3,7 +3,8 @@ import {getCookie, getAccessToken, setAccessToken} from "@/api/authCookie";
 
 
 const api = axios.create({
-    baseURL: 'http://127.0.0.1',
+    // baseURL: 'http://127.0.0.1',
+    baseURL: 'http://195.133.48.150',
     headers: {
         'Content-Type': 'application/json',
     },
