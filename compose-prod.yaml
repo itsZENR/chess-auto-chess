@@ -24,13 +24,6 @@ services:
     depends_on:
       - postgres
 
-  # fastapi:
-  #   build:
-  #     context: fastapi/
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - postgres
-
   postgres:
     image: postgres:15
     restart: always
