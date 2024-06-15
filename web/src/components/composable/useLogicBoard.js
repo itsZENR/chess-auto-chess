@@ -2,15 +2,14 @@ import {useLogicBoardFunctions} from "@/components/composable/useLogicBoardFunct
 
 export function useLogicBoard(soundStep) {
 
-    const {updateBoard, gameResult, boardMoveEngine} = useLogicBoardFunctions(soundStep)
+    const {updateBoard, checkGameStatus, boardMoveEngine} = useLogicBoardFunctions(soundStep)
 
-    const logicBoard = (data, board, game, gameStatus) => {
-        console.log("==New message:==", data);
-
-        let color = undefined;
-        let playerPoint = undefined;
+    const logicBoard = (data, board, game, gameStart, gameResult, allStepsMove) => {
+        console.log("New message:==", data);
 
         if (data.message === "Готов") {
+            gameStart.value = true;
+
             // Записываем позицию доски
             let boardFen = board.value.fen();
             boardFen = boardFen + " " + "w - - 0 1";
@@ -22,19 +21,10 @@ export function useLogicBoard(soundStep) {
             console.log("gameStatus:", data.game_status);
         }
 
-        gameResult(data.gameStatus)
+        checkGameStatus(data.game_status, gameResult)
 
         if (data.move != undefined) {
-            console.log("data.move", data.move)
-
-            // Обновляем статус игры
-            gameStatus.value = true;
-
-            // // Делаем кнопку неактивной
-            // saveButton.disabled = true;
-
-            // console.log("move: " + data.move);
-            boardMoveEngine(data.move, game, board);
+            boardMoveEngine(data.move, game, board, allStepsMove);
         }
 
         if (data.message != undefined) {
