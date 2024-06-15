@@ -13,7 +13,7 @@ import time
 
 class GameConsumer(AsyncWebsocketConsumer):
     # "D:/Python_project/ChessAutoChess/app/ChessAutoChess/engine/stockfish-windows-x86-64/stockfish/stockfish-windows-x86-64.exe")
-    engine = '/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/' + \
+    engine_path = '/app/ChessAutoChess/engine/stockfish-ubuntu-x86-64/' + \
             'stockfish/stockfish-ubuntu-x86-64'
     # Создаем объект шахматной доски
     board = chess.Board()
@@ -32,6 +32,9 @@ class GameConsumer(AsyncWebsocketConsumer):
     cost_dict = {'P': 1, 'N': 3, 'B': 3, 'R': 5, 'Q': 9}
 
     color_is_white = True
+
+    # Инициализация движка как None
+    engine = None
 
     async def connect(self):
         # Создаем объект шахматной доски
@@ -103,11 +106,11 @@ class GameConsumer(AsyncWebsocketConsumer):
         )
 
     async def stop_engine(self):
-        if hasattr(self, 'engine'):
+        if self.engine is not None:
             self.engine.quit()
+            self.engine = None
         self.game_start = False
 
-    # Receive message from WebSocket
     async def receive(self, text_data):
         if not text_data:
             await self.send(text_data=json.dumps(
@@ -165,7 +168,7 @@ class GameConsumer(AsyncWebsocketConsumer):
                                        })
 
     async def run_engine(self):
-        self.engine = chess.engine.SimpleEngine.popen_uci(self.engine)
+        self.engine = chess.engine.SimpleEngine.popen_uci(self.engine_path)
 
         while self.board.outcome() is None:
             start = time.time()
@@ -185,7 +188,7 @@ class GameConsumer(AsyncWebsocketConsumer):
 
             # Отправляем собщение в группу
             await self.channel_layer.group_send(
-                self.room_group_name, {"type": "move.message",
+                self.room_group_name,  {"type": "move.message",
                                         "move": str(move),
                                         'user': self.scope['user'].id
                                         }
