@@ -1,14 +1,14 @@
 <template>
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
     <base-text>
-      Игрок 1
+      Игрок {{ !orientation ? "1" : "2" }}
     </base-text>
     <div ref="board" class="board"></div>
     <base-text>
-      Игрок 2
+      Игрок {{ orientation ? "1" : "2" }}
     </base-text>
   </v-col>
-  <audio ref="soundStep">
+  <audio class="position-absolute" ref="soundStep">
     <source :src="soundSrc" type="audio/mpeg">
   </audio>
 </template>
@@ -34,26 +34,32 @@ const {isReady, ws, message, orientation} = toRefs(props);
 
 
 const emit = defineEmits({
-  'points': Number
+  'updatePoints': Number,
+  'updateGameStatus': Boolean,
+  'updateGameResult': String,
+  'updateGameSteps': Array,
 })
 
 
 const board = ref(null);
 const soundStep = ref(null);
-const gameStatus = ref(false);
 const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
+const gameStart = ref(false);
+const gameResult = ref(null)
+const allStepsMove = ref([]);
+
 const logicBoardFunc = ref()
 
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
   logicBoardFunc.value = logicBoard
-  useSettingChess(board.value, soundStep.value, gameStatus.value, ws, totalPoints);
+  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints);
 });
 
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStatus)
+  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult, allStepsMove)
 })
 
 watch(orientation, () => {
@@ -63,8 +69,20 @@ watch(orientation, () => {
 })
 
 watch(totalPoints, () => {
-  emit('points', totalPoints.value);
+  emit('updatePoints', totalPoints.value);
 }, {immediate: true})
+
+watch(gameStart, () => {
+  emit('updateGameStatus', gameStart.value);
+})
+
+watch(gameResult, () => {
+  emit('updateGameResult', gameResult.value);
+})
+
+watch(allStepsMove.value, () => {
+  emit('updateGameSteps', allStepsMove.value);
+})
 
 </script>
 
@@ -79,6 +97,8 @@ watch(totalPoints, () => {
   display: flex;
   justify-content: center;
   padding: 0 !important;
+  width: calc(100% - 1px);
+  background: #3e3e3e;
 }
 
 .spare-pieces-7492f:first-child, .spare-pieces-7492f img:first-child {

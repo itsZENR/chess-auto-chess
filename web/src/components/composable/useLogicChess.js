@@ -1,7 +1,7 @@
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
 import {useWebsocket} from "@/components/composable/useWebsocket";
 
-export function useLogicChess(board, soundStep, gameStatus, totalPoints, source, target, piece, newPos, oldPos, orientation, ws) {
+export function useLogicChess(board, soundStep, gameStart, totalPoints, source, target, piece, newPos, oldPos, orientation, ws) {
 
     const {sendMessageToServer} = useWebsocket()
 
@@ -33,7 +33,7 @@ export function useLogicChess(board, soundStep, gameStatus, totalPoints, source,
 
 
     // Если игры начата, запрещаем двиграть фигуры
-    if (gameStatus) {
+    if (gameStart) {
         return snapbackMove();
     }
 
