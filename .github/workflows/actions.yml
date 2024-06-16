@@ -75,6 +75,21 @@ jobs:
             full_path_new_version=$(readlink -f "/opt/chess/${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}");
             export RELEASE_NAME="${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}";
 
+            # Начать удаление прошлых неиспользуемых релизов
+            info "Started deleting older version's"
+            for dir in /opt/chess/*; 
+              do
+                if [[ -d "$dir" ]]; then
+                  if [[ "$dir" != "$full_path_current" && "$dir" != "$full_path_pre_current" && "$dir" != "$full_path_new_version" && "$dir" != "/opt/chess/current" && "$dir" != "/opt/chess/pre-current" ]]; then
+                    info "Удаление версии: $dir"
+                    rm -rf "$dir"
+                    # project_name="prod-$(echo $dir | sed 's|.*/||')"
+                  else
+                    info "Сохранение версии: $dir"
+                  fi
+                fi
+              done
+
             # Начать сборку нового релиза
             cd $full_path_new_version;
             rm -rf $RELEASE_NAME || true;
