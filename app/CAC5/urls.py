@@ -2,7 +2,7 @@
 URL configuration for CAC5 project.
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from rest_framework.routers import SimpleRouter
 from drf_spectacular.views import (
@@ -16,6 +16,7 @@ from ChessAutoChess.views import (
                             room,
                             # UserView,
                             GameDetail,
+                            get_version
 )
 
 
@@ -23,11 +24,16 @@ router = SimpleRouter()
 
 # router.register('api/users', UserView)
 
+api = [
+    path('auth/', auth),
+    path('room/', room),
+    path('room/connect/<int:room_name>/', login_required(GameDetail.as_view())),
+    path('version', get_version)
+]
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', auth),
-    path('api/room/', room),
-    path('api/room/connect/<int:room_name>/', login_required(GameDetail.as_view())),
+    path('api/', include(api))    
 ]
 
 urlpatterns += router.urls

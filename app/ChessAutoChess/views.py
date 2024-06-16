@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
+from django.conf import settings
 from rest_framework.viewsets import ModelViewSet
 from .models import Game
 from .serializers import UserSerializer
@@ -89,3 +90,11 @@ class UserView(ModelViewSet):
     '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+def get_version(request):
+    '''
+    Получить версию приложения
+    '''
+    return JsonResponse(
+        {'version': f'{settings.RELEASE_NAME}'}
+    )
