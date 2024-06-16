@@ -106,7 +106,15 @@ jobs:
             cd $full_path_current;
             docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml stop;
 
-            # Запустить новый релиз
+            # Запустить контейнеры с Данными
+            info "Started  containers new version with DataStorage"
+            cd $full_path_new_version;
+            docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml --profile storage up -d ;
+
+            # Проверка запущены ли контейнеры
+            sleep 15;
+
+            # Запустить контейнеры приложений
             info "Started new version"
             cd $full_path_new_version;
             docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml up -d;
@@ -138,8 +146,19 @@ jobs:
               cd $full_path_old_version;
               docker compose -p prod-$(basename "$full_path_pre_current") -f compose-prod.yaml down;
               cd $full_path_current;
-              info "Start the previous version"
+
+              info "Start the previous version with DataStorage"
+              # Запустить контейнеры с Данными
+              cd $full_path_new_version;
+              docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml --profile storage up -d ;
+              # Проверка запущены ли контейнеры
+              sleep 15;
+
+              info "Start the previous version app"
+              # Запустить контейнеры приложений
+              cd $full_path_current;
               docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml up -d;
+
               success "Started the previous version";
               exit 1;
             fi
