@@ -56,28 +56,48 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_SSH_PORT }}
           script: |
+
+            function info() {
+              echo -e "\033[37m[Info]: $1\033[0m"
+            }
+
+            function success() {
+              echo -e "\033[0;32m[Success]: $1\033[0m"
+            }
+
+            function error() {
+              echo -e "\033[0;31m[Failed]: $1\033[0m"
+            }
+
             full_path_current=$(readlink -f "/opt/chess/current");
             full_path_pre_current=$(readlink -f "/opt/chess/pre-current");
+            full_path_old_version=$(readlink -f "/opt/chess/current");
             full_path_new_version=$(readlink -f "/opt/chess/${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}");
             export RELEASE_NAME="${{ env.TAG }}_${{ env.COMMIT_SHORT_SHA }}";
 
             # Начать сборку нового релиза
             cd $full_path_new_version;
             rm -rf $RELEASE_NAME || true;
+
+            info "Generate .env file"
             echo "${{ secrets.APP_ENV }}" > .env;
             echo "COMMIT_SHA=${{ env.COMMIT_SHORT_SHA }}" >> .env;
+            echo "RELEASE_NAME=$RELEASE_NAME" >> .env;
+
             docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml build;
 
             # Остановить текущий релиз
+            info "Stopped current version"
             cd $full_path_current;
             docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml stop;
 
             # Запустить новый релиз
+            info "Started new version"
             cd $full_path_new_version;
             docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml up -d;
             
             # Проверка запущены ли контейнеры
-            sleep 10;
+            sleep 15;
 
             # Получаем количество всех контейнеров
             total_containers=$(docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml ps --services | wc -l)
@@ -96,10 +116,15 @@ jobs:
               rm -rf current;
               ln -sf $full_path_new_version current;
 
-              echo "[Success]: Deploy sucessfully";
+              success "Deployed sucessfully";
             else
-              echo "[Failed]: Deploy failed"
+              error "Deployed failed"
+              info "Stop new version"
+              cd $full_path_old_version;
+              docker compose -p prod-$(basename "$full_path_pre_current") -f compose-prod.yaml down;
               cd $full_path_current;
+              info "Start the previous version"
               docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml up -d;
-              echo "[Success]: Started the previous release"
+              success "Started the previous version";
+              exit 1;
             fi
