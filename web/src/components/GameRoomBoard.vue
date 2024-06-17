@@ -21,6 +21,7 @@ import {useSettingChess} from "@/components/composable/useSettingChess";
 import {useLogicBoard} from "@/components/composable/useLogicBoard";
 import BaseText from "@/components/ui/BaseText";
 import soundPath from '@/assets/sound/moveStep.mp3';
+import {useChessScrollControl} from "@/components/composable/useChessScrollControl";
 
 
 const props = defineProps({
@@ -40,6 +41,7 @@ const emit = defineEmits({
   'updateGameSteps': Array,
 })
 
+useChessScrollControl()
 
 const board = ref(null);
 const soundStep = ref(null);

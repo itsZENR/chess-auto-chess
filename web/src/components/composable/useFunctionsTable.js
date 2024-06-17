@@ -1,6 +1,6 @@
 import {computed, ref} from "vue";
 
-export function useFunctionsTable() {
+export function useFunctionsTable(allStepsMove) {
 
     const loading = ref(false)
     const isReady = ref(false)
@@ -38,5 +38,5 @@ export function useFunctionsTable() {
     }
 
 
-    return {load, changeActiveBtn, isReady, stepsInPairs, formatMove}
+    return {load, loading, changeActiveBtn, isReady, stepsInPairs, formatMove}
 }
