@@ -17,7 +17,7 @@
           </v-app-bar-title>
         </v-sheet>
         <v-sheet class="mx-2">
-          <nav class="hidden-sm-and-down">
+          <nav>
             <router-link to="/" class="router-link">Главная</router-link>
           </nav>
         </v-sheet>
