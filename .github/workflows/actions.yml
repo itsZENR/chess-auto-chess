@@ -131,7 +131,7 @@ jobs:
             running_containers=$(docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml ps --services --filter "status=running" | wc -l)
 
             # Проверяем, запущены ли все контейнеры
-            if [ "$total_containers" -eq "$running_containers" ]; then
+            if [ "$running_containers" -ne 0 ] && [ "$total_containers" -eq "$running_containers" ]; then
               cd /opt/chess;
               # Меняем ссылку pre-current на предыдущую версию
               rm -rf pre-current;
