@@ -8,9 +8,13 @@
       <slot>
         <v-card
             max-width="500"
-            title="Ссылка на приглашение:"
         >
-          <template v-slot:actions>
+          <v-card-title
+              class="d-flex justify-center"
+          >
+            Ссылка на приглашение:
+          </v-card-title>
+          <v-card-actions class="d-flex flex-wrap">
             <input
                 ref="urlElement"
                 :value="urlValue"
@@ -29,7 +33,7 @@
                 text="Закрыть"
                 @click="popupClose"
             ></v-btn>
-          </template>
+          </v-card-actions>
         </v-card>
       </slot>
     </v-dialog>
