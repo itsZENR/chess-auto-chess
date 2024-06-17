@@ -2,6 +2,7 @@
   <base-button
       @btn-click="routerPush"
       :disabled="isDisable"
+      :loading="loading"
   >
     Играть
   </base-button>
@@ -20,14 +21,17 @@ authorization()
 
 const idRoom = ref()
 const isDisable = ref(false)
+const loading = ref(false)
 
 async function routerPush() {
+  loading.value = true
   isDisable.value = true
   idRoom.value = await createRoom()
   await router.push({
     name: 'game',
     params: {idRoom: idRoom.value.room_name}
   });
+  loading.value = false
 }
 
 </script>
