@@ -1,11 +1,20 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import TheMain from '../views/TheMain.vue'
+import TheAbout from '../views/TheAbout.vue'
 
 const routes = [
     {
         path: '/',
         name: 'home',
         component: TheMain,
+        meta: {
+            layout: 'BaseLayout',
+        },
+    },
+      {
+        path: '/about',
+        name: 'about',
+        component: TheAbout,
         meta: {
             layout: 'BaseLayout',
         },

@@ -1,6 +1,7 @@
 <template>
   <v-row v-if="!isConnected" class="justify-center">
-    Websocket не подключен
+    <loader object="#4c00ff" color1="#000000" color2="#4b6aa3" size="15" speed="2" bg="#343a40" objectbg="#999793"
+            opacity="80" disableScrolling="false" name="dots"></loader>
   </v-row>
   <v-row v-else class="justify-center">
     <game-room-popup
@@ -62,7 +63,7 @@ import GameRoomBoard from "@/components/GameRoomBoard";
 import GameRoomTable from "@/components/GameRoomTable";
 import GameRoomPopup from "@/components/GameRoomPopup";
 import {useWebsocket} from "@/components/composable/useWebsocket";
-import {connectRoom, getAuth} from "@/api/index.js";
+import {connectRoom} from "@/api/index.js";
 import {useAuthorization} from "@/components/composable/useAuthorization";
 
 

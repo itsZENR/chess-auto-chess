@@ -1,12 +1,12 @@
 <template>
   <div class="d-flex h-100 align-center justify-center">
-    <main-page/>
+    <base-about/>
   </div>
 </template>
 
 <script setup>
 // Components
-import MainPage from '../components/MainPage.vue';
+import BaseAbout from '../components/BaseAbout';
 
 
 </script>
