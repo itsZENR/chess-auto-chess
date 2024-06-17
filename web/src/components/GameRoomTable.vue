@@ -83,7 +83,7 @@ const {totalPoints, gameStart, allStepsMove} = toRefs(props);
 
 const emit = defineEmits(['clickReady'])
 
-const {load, changeActiveBtn, isReady, stepsInPairs, formatMove} = useFunctionsTable()
+const {load, loading, changeActiveBtn, isReady, stepsInPairs, formatMove} = useFunctionsTable(allStepsMove)
 
 const isBtnVariants = ref('outlined')
 const isBtnColor = ref('primary')
