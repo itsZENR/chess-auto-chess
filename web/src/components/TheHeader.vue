@@ -16,9 +16,12 @@
             </router-link>
           </v-app-bar-title>
         </v-sheet>
-        <v-sheet class="mx-2">
+        <v-sheet class="d-flex mx-2">
           <nav>
-            <router-link to="/" class="router-link">Главная</router-link>
+            <router-link to="/" class="router-link mx-2">Главная</router-link>
+          </nav>
+          <nav>
+            <router-link to="/about" class="router-link mx-2">О нас</router-link>
           </nav>
         </v-sheet>
       </v-row>
