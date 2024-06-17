@@ -37,16 +37,16 @@ services:
       - .env
     volumes:
       - chess_postgres_data:/var/lib/postgresql/data
-    profiles: 
-      - storage
+    # profiles: 
+    #   - storage
 
   redis:
     image: bitnami/redis:7.0.15
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-    profiles: 
-      - storage
+    # profiles: 
+    #   - storage
 
 volumes:
   chess_postgres_data:
