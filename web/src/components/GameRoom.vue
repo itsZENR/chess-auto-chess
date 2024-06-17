@@ -1,6 +1,6 @@
 <template>
   <v-row v-if="!isConnected" class="justify-center">
-    <loader object="#4c00ff" color1="#000000" color2="#4b6aa3" size="20" speed="2" bg="#343a40" objectbg="#999793"
+    <loader object="#4c00ff" color1="#000000" color2="#4b6aa3" size="15" speed="2" bg="#343a40" objectbg="#999793"
             opacity="80" disableScrolling="false" name="dots"></loader>
   </v-row>
   <v-row v-else class="justify-center">
