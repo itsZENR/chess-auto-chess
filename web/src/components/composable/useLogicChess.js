@@ -34,6 +34,7 @@ export function useLogicChess(board, soundStep, gameStart, totalPoints, source, 
 
     // Если игры начата, запрещаем двиграть фигуры
     if (gameStart) {
+        successMessage("Игра началась!")
         return snapbackMove();
     }
 
@@ -47,8 +48,13 @@ export function useLogicChess(board, soundStep, gameStart, totalPoints, source, 
         return snapbackMove();
     }
 
-    if (isTargetRow(target, piece, orientation)) {
+    if (isTargetRow(target, piece, orientation) === "errorTargetRow") {
         successMessage("Перемещать фигуры возможно только в пределах первых 4-х клеток")
+        return snapbackMove();
+    }
+
+    if (isTargetRow(target, piece, orientation) === "errorOrientation") {
+        successMessage("Это чужая фигура!", "warning")
         return snapbackMove();
     }
 

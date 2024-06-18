@@ -14,14 +14,14 @@ export function useFunctionsChess() {
             (orientation === "white" && targetColor === "b") ||
             (orientation === "black" && targetColor === "w")
         ) {
-            return true; // Фигура не соответствует ориентации игрока
+            return 'errorOrientation'; // Фигура не соответствует ориентации игрока
         }
 
         if (
             (orientation === "white" && targetRow > 4) ||
             (orientation === "black" && targetRow < 5)
         ) {
-            return true; // Позиция фигуры не соответствует ориентации игрока
+            return 'errorTargetRow'; // Позиция фигуры не соответствует ориентации игрока
         }
 
         return false;
