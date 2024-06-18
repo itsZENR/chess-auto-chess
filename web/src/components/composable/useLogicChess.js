@@ -1,7 +1,7 @@
 import {useFunctionsChess} from "@/components/composable/useFunctionsChess";
 import {useWebsocket} from "@/components/composable/useWebsocket";
 
-export function useLogicChess(board, soundStep, gameStart, totalPoints, source, target, piece, newPos, oldPos, orientation, ws) {
+export function useLogicChess(board, soundStep, gameStart, totalPoints, source, target, piece, newPos, oldPos, orientation, ws, successMessage) {
 
     const {sendMessageToServer} = useWebsocket()
 
@@ -43,19 +43,23 @@ export function useLogicChess(board, soundStep, gameStart, totalPoints, source, 
 
     // Проверка для короля
     if (isTargetOutside && piece.charAt(1) === "K") {
+        successMessage("Короля выкинуть нельзя!")
         return snapbackMove();
     }
 
     if (isTargetRow(target, piece, orientation)) {
+        successMessage("Перемещать фигуры возможно только в пределах первых 4-х клеток")
         return snapbackMove();
     }
 
     if (isExistingPiece(target, board)) {
+        successMessage("Клетка занята")
         return snapbackMove();
     }
 
     if (!isTargetOutside && isTargetSpare) {
         if (isEnoughPoints(piece, pieceValue, totalPoints.value)) {
+            successMessage("Недостаточно очков для добавления фигуры", "warning")
             return snapbackMove();
         }
     }

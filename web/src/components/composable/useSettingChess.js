@@ -1,7 +1,7 @@
 import {ref} from "vue";
 import {useLogicChess} from "@/components/composable/useLogicChess";
 
-export function useSettingChess(board, soundStep, gameStart, ws, totalPoints) {
+export function useSettingChess(board, soundStep, gameStart, ws, totalPoints, successMessage) {
 
     const websocket = ref(ws);
 
@@ -18,7 +18,7 @@ export function useSettingChess(board, soundStep, gameStart, ws, totalPoints) {
 
     // Функция срабатывает после отпуска фигуры
     function onDrop(source, target, piece, newPos, oldPos, orientation) {
-       return useLogicChess(board.value, soundStep, gameStart, totalPoints, source, target, piece, newPos, oldPos, orientation, websocket.value)
+       return useLogicChess(board.value, soundStep, gameStart, totalPoints, source, target, piece, newPos, oldPos, orientation, websocket.value, successMessage)
     }
 
 }
