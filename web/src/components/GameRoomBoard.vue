@@ -11,6 +11,8 @@
   <audio class="position-absolute" ref="soundStep">
     <source :src="soundSrc" type="audio/mpeg">
   </audio>
+  <vue3-snackbar bottom right :duration="5000">
+  </vue3-snackbar>
 </template>
 
 <script setup>
@@ -22,6 +24,7 @@ import {useLogicBoard} from "@/components/composable/useLogicBoard";
 import BaseText from "@/components/ui/BaseText";
 import soundPath from '@/assets/sound/moveStep.mp3';
 import {useChessScrollControl} from "@/components/composable/useChessScrollControl";
+import {useSnackbar, Vue3Snackbar} from "vue3-snackbar";
 
 
 const props = defineProps({
@@ -53,12 +56,21 @@ const gameResult = ref(null)
 const allStepsMove = ref([]);
 
 const logicBoardFunc = ref()
+const snackbar = useSnackbar();
 
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
   logicBoardFunc.value = logicBoard
-  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints);
+  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints, successMessage);
 });
+
+const successMessage = (message, status='info') => {
+  console.log("status", status)
+  snackbar.add({
+    type: status,
+    text: message
+  })
+}
 
 watch(message, () => {
   logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult, allStepsMove)
