@@ -2,6 +2,12 @@
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
     <base-text>
       Игрок {{ !orientation ? "1" : "2" }}
+      <span
+          v-if="playerReady && !gameStart"
+          class="text-grey-darken-1"
+      >
+        ожидаем готовности 2-го игрока...
+      </span>
     </base-text>
     <div ref="board" class="board"></div>
     <base-text>
