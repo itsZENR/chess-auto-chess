@@ -51,7 +51,8 @@ const soundStep = ref(null);
 const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
-const gameStart = ref(false);
+const playerReady = ref(false);
+const gameStart = ref(false)
 const gameResult = ref(null)
 const allStepsMove = ref([]);
 
@@ -61,10 +62,10 @@ const snackbar = useSnackbar();
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
   logicBoardFunc.value = logicBoard
-  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints, successMessage);
+  useSettingChess(board.value, soundStep.value, playerReady, ws, totalPoints, successMessage);
 });
 
-const successMessage = (message, status='info') => {
+const successMessage = (message, status = 'info') => {
   snackbar.add({
     type: status,
     text: message
@@ -72,7 +73,7 @@ const successMessage = (message, status='info') => {
 }
 
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult, allStepsMove)
+  logicBoardFunc.value(message.value, board.value, game, playerReady, gameStart, gameResult, allStepsMove)
 })
 
 watch(orientation, () => {
