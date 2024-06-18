@@ -78,6 +78,15 @@ const successMessage = (message, status = 'info') => {
   })
 }
 
+watch(playerReady, () => {
+  if (playerReady.value) {
+    const divPieces = document.querySelectorAll('.spare-pieces-7492f');
+    divPieces.forEach(divPiece => {
+      divPiece.style.display = 'none';
+    });
+  }
+})
+
 watch(message, () => {
   logicBoardFunc.value(message.value, board.value, game, playerReady, gameStart, gameResult, allStepsMove)
 })
@@ -92,8 +101,8 @@ watch(totalPoints, () => {
   emit('updatePoints', totalPoints.value);
 }, {immediate: true})
 
-watch(gameStart, () => {
-  emit('updateGameStatus', gameStart.value);
+watch(playerReady, () => {
+  emit('updateGameStatus', playerReady.value);
 })
 
 watch(gameResult, () => {
