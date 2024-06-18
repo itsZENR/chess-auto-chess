@@ -5642,6 +5642,19 @@ vue-ui-preloader@^1.2.1:
   resolved "https://registry.yarnpkg.com/vue-ui-preloader/-/vue-ui-preloader-1.2.1.tgz#3d32ba1c6b1d6c7a37e0a9bd684e8c011829bbd5"
   integrity sha512-zxERqfGU/KW4LvIhPkwVZhRwioGXXOF5e+YXSZq27vpSrc8+w9bbWJercbIIIUXTl7Z5sUbINlm9X5iN0pESxw==
 
+vue3-icon@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue3-icon/-/vue3-icon-2.1.0.tgz#9b217204eaeed20e428ec7615fac5579b66d396f"
+  integrity sha512-cnFiGAEwzp/KQKody2Yj8cBDP4Kez0AUp5mDnp052FA1fECl8a9uYUKLaeRdH0JakmZ7Jfp3tdHbpBEWF9sgBA==
+
+vue3-snackbar@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/vue3-snackbar/-/vue3-snackbar-2.2.2.tgz#ef90901d5a9fced90c3a24f04d55e427327d533b"
+  integrity sha512-UolbctnEzc7d0lNnD86TYVmqA0Ig+CsKYQsgwc6+dnaebmVENkIzAiylSxpgYJuxxJl86KCA5FQxo/By9/6LqQ==
+  dependencies:
+    tiny-emitter "^2.1.0"
+    vue3-icon "^2.1.0"
+
 vue@^3.2.13:
   version "3.4.26"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.4.26.tgz#936c97e37672c737705d7bdfa62c31af18742269"
