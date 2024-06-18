@@ -65,7 +65,6 @@ onMounted(() => {
 });
 
 const successMessage = (message, status='info') => {
-  console.log("status", status)
   snackbar.add({
     type: status,
     text: message
