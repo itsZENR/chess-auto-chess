@@ -32,7 +32,6 @@ export function useLogicChess(board, soundStep, playerReady, totalPoints, source
     } = useFunctionsChess()
 
     if (playerReady.value) {
-        successMessage("Игра началась!")
         return snapbackMove();
     }
 
