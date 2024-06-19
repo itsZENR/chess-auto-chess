@@ -1,10 +1,10 @@
 import {ref} from 'vue';
 
 export function connectWebsocket(idRoom) {
-    console.log("Starting connection to WebSocket Server")
+
+    const url = process.env.VUE_APP_URL
     const isConnected = ref(false);
-    // const ws = new WebSocket(`ws://127.0.0.1:80/ws/${idRoom}/`)
-    const ws = new WebSocket(`ws://chess-auto-chess.ru:80/ws/${idRoom}/`)
+    const ws = new WebSocket(`ws://${url}/ws/${idRoom}/`)
 
     ws.onopen = function (event) {
         console.log("Успешное подключение к websocket")
