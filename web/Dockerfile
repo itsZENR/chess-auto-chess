@@ -1,7 +1,5 @@
 FROM node:20.12.2 AS node_builder
 
-ENV VUE_APP_NODE_ENV=production
-
 WORKDIR /web
 
 COPY package.json package.json
@@ -12,7 +10,7 @@ RUN yarn install --no-cache -p
 
 COPY . .
 
-RUN yarn run build-prod
+RUN yarn run build
 
 FROM nginx
 
