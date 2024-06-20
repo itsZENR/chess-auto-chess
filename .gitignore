@@ -10,6 +10,11 @@
 *.sqlite3
 *.pyc
 
+# local env files
+.env.local
+.env.*.local
+web/.env
+
 # Игнорировать файлы и папки для проекта FastAPI
 __pycache__/
 *.pyc
