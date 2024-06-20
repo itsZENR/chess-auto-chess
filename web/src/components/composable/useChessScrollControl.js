@@ -31,14 +31,14 @@ export function useChessScrollControl() {
             piece.addEventListener('touchstart', onDragStart, {passive: false});
             piece.addEventListener('touchend', onDragEnd);
         });
-        pieceElementsDiv.forEach((pieceElementDiv) => {
-            pieceElementDiv.addEventListener("touchstart", onDragStart, {passive: false});
-            pieceElementDiv.addEventListener("touchend", onDragEnd);
-        });
         pieces.forEach((piece) => {
             piece.addEventListener("touchmove", handleTouchMove, {
                 passive: false
             });
+        });
+        pieceElementsDiv.forEach((pieceElementDiv) => {
+            pieceElementDiv.addEventListener("touchstart", onDragStart, {passive: false});
+            pieceElementDiv.addEventListener("touchend", onDragEnd);
         });
         pieceElementsDiv.forEach((pieceElementDiv) => {
             pieceElementDiv.addEventListener("touchmove", handleTouchMove, {
@@ -49,9 +49,25 @@ export function useChessScrollControl() {
 
     const removeEventListeners = () => {
         const pieces = document.querySelectorAll('.piece-417db');
+        const pieceElementsDiv = document.querySelectorAll(".square-55d63");
+
         pieces.forEach((piece) => {
             piece.removeEventListener('touchstart', onDragStart);
             piece.removeEventListener('touchend', onDragEnd);
+        });
+        pieces.forEach((piece) => {
+            piece.removeEventListener("touchmove", handleTouchMove, {
+                passive: false
+            });
+        });
+        pieceElementsDiv.forEach((pieceElementDiv) => {
+            pieceElementDiv.removeEventListener("touchstart", onDragStart, {passive: false});
+            pieceElementDiv.removeEventListener("touchend", onDragEnd);
+        });
+        pieceElementsDiv.forEach((pieceElementDiv) => {
+            pieceElementDiv.removeEventListener("touchmove", handleTouchMove, {
+                passive: false
+            });
         });
     };
 

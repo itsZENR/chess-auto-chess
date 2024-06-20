@@ -13,7 +13,7 @@
 # local env files
 .env.local
 .env.*.local
-.env
+web/.env
 
 # Игнорировать файлы и папки для проекта FastAPI
 __pycache__/
