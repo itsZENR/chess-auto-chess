@@ -1,9 +1,7 @@
 import axios from 'axios';
 import {getCookie, getAccessToken, setAccessToken} from "@/api/authCookie";
 
-const url = process.env.VUE_APP_URL
 const api = axios.create({
-    baseURL: `http://${url}`,
     headers: {
         'Content-Type': 'application/json',
     },
