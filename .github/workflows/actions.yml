@@ -104,15 +104,17 @@ jobs:
             # Остановить текущий релиз
             info "Stopped current version"
             cd $full_path_current;
-            docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml stop;
+            docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml down;
+            sleep 10;
 
+            # TODO: Разобраться с работой --profile
             # Запустить контейнеры с Данными
-            info "Started  containers new version with DataStorage"
-            cd $full_path_new_version;
-            docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml --profile storage up -d ;
+            # info "Started  containers new version with DataStorage"
+            # cd $full_path_new_version;
+            # docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml --profile storage up -d ;
 
-            # Проверка запущены ли контейнеры
-            sleep 15;
+            # # Проверка запущены ли контейнеры
+            # sleep 15;
 
             # Запустить контейнеры приложений
             info "Started new version"
@@ -129,7 +131,7 @@ jobs:
             running_containers=$(docker compose -p prod-$RELEASE_NAME -f compose-prod.yaml ps --services --filter "status=running" | wc -l)
 
             # Проверяем, запущены ли все контейнеры
-            if [ "$total_containers" -eq "$running_containers" ]; then
+            if [ "$running_containers" -ne 0 ] && [ "$total_containers" -eq "$running_containers" ]; then
               cd /opt/chess;
               # Меняем ссылку pre-current на предыдущую версию
               rm -rf pre-current;
@@ -145,15 +147,10 @@ jobs:
               info "Stop new version"
               cd $full_path_old_version;
               docker compose -p prod-$(basename "$full_path_pre_current") -f compose-prod.yaml down;
-              cd $full_path_current;
+              
+              # TODO: Вставить --profile
 
-              info "Start the previous version with DataStorage"
-              # Запустить контейнеры с Данными
-              cd $full_path_new_version;
-              docker compose -p prod-$(basename "$full_path_current") -f compose-prod.yaml --profile storage up -d ;
-              # Проверка запущены ли контейнеры
-              sleep 15;
-
+              sleep 10;
               info "Start the previous version app"
               # Запустить контейнеры приложений
               cd $full_path_current;
