@@ -4,7 +4,7 @@ const { VuetifyPlugin } = require('webpack-plugin-vuetify');
 
 module.exports = defineConfig({
 	transpileDependencies: ['vuetify'],
-	publicPath: process.env.VUE_APP_NODE_ENV === 'development' ? '/static' : '/',
+
 	devServer: {
 		port: 8080,
 	},

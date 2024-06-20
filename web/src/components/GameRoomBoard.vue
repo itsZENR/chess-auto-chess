@@ -2,6 +2,12 @@
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
     <base-text>
       Игрок {{ !orientation ? "1" : "2" }}
+      <span
+          v-if="playerReady && !gameStart"
+          class="text-grey-darken-1"
+      >
+        ожидаем готовности 2-го игрока...
+      </span>
     </base-text>
     <div ref="board" class="board"></div>
     <base-text>
@@ -11,6 +17,8 @@
   <audio class="position-absolute" ref="soundStep">
     <source :src="soundSrc" type="audio/mpeg">
   </audio>
+  <vue3-snackbar bottom right :duration="5000">
+  </vue3-snackbar>
 </template>
 
 <script setup>
@@ -22,6 +30,7 @@ import {useLogicBoard} from "@/components/composable/useLogicBoard";
 import BaseText from "@/components/ui/BaseText";
 import soundPath from '@/assets/sound/moveStep.mp3';
 import {useChessScrollControl} from "@/components/composable/useChessScrollControl";
+import {useSnackbar, Vue3Snackbar} from "vue3-snackbar";
 
 
 const props = defineProps({
@@ -48,20 +57,38 @@ const soundStep = ref(null);
 const soundSrc = soundPath;
 const game = new Chess();
 const totalPoints = ref(10);
-const gameStart = ref(false);
+const playerReady = ref(false);
+const gameStart = ref(false)
 const gameResult = ref(null)
 const allStepsMove = ref([]);
 
 const logicBoardFunc = ref()
+const snackbar = useSnackbar();
 
 onMounted(() => {
   const {logicBoard} = useLogicBoard(soundStep.value)
   logicBoardFunc.value = logicBoard
-  useSettingChess(board.value, soundStep.value, gameStart.value, ws, totalPoints);
+  useSettingChess(board.value, soundStep.value, playerReady, ws, totalPoints, successMessage);
 });
 
+const successMessage = (message, status = 'info') => {
+  snackbar.add({
+    type: status,
+    text: message
+  })
+}
+
+watch(playerReady, () => {
+  if (playerReady.value) {
+    const divPieces = document.querySelectorAll('.spare-pieces-7492f');
+    divPieces.forEach(divPiece => {
+      divPiece.style.display = 'none';
+    });
+  }
+})
+
 watch(message, () => {
-  logicBoardFunc.value(message.value, board.value, game, gameStart, gameResult, allStepsMove)
+  logicBoardFunc.value(message.value, board.value, game, playerReady, gameStart, gameResult, allStepsMove)
 })
 
 watch(orientation, () => {
@@ -74,8 +101,8 @@ watch(totalPoints, () => {
   emit('updatePoints', totalPoints.value);
 }, {immediate: true})
 
-watch(gameStart, () => {
-  emit('updateGameStatus', gameStart.value);
+watch(playerReady, () => {
+  emit('updateGameStatus', playerReady.value);
 })
 
 watch(gameResult, () => {
