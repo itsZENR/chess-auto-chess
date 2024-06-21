@@ -74,7 +74,10 @@ const route = useRoute();
 
 connectRoom(route.params.idRoom)
 
-const {ws, isConnected} = connectWebsocket(route.params.idRoom)
+const domain = ref('');
+domain.value = window.location.hostname;
+
+const {ws, isConnected} = connectWebsocket(route.params.idRoom, domain.value)
 const {sendMessageToServer, receivedWebsocket, messageWebsocket} = useWebsocket()
 receivedWebsocket(ws)
 
