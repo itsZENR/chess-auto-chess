@@ -55,6 +55,10 @@ export function useLogicChess(board, soundStep, playerReady, totalPoints, source
         return snapbackMove();
     }
 
+    if (source === target) {
+        return;
+    }
+
     if (isExistingPiece(target, board)) {
         successMessage("Клетка занята")
         return snapbackMove();
