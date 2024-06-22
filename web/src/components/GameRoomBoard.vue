@@ -50,7 +50,7 @@ const emit = defineEmits({
   'updateGameSteps': Array,
 })
 
-useChessScrollControl()
+const {initEventListeners} = useChessScrollControl()
 
 const board = ref(null);
 const soundStep = ref(null);
@@ -95,6 +95,7 @@ watch(orientation, () => {
   if (!orientation.value) {
     board.value.value.orientation("black");
   }
+  initEventListeners()
 })
 
 watch(totalPoints, () => {
@@ -131,6 +132,10 @@ watch(allStepsMove.value, () => {
 }
 
 .spare-pieces-7492f:first-child, .spare-pieces-7492f img:first-child {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

@@ -80,4 +80,6 @@ export function useChessScrollControl() {
     onUnmounted(() => {
         removeEventListeners();
     });
+
+    return {initEventListeners}
 }
