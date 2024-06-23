@@ -9,6 +9,9 @@ services:
       - .env
     depends_on:
       - django
+    volumes:
+      - .ssl/chess-auto-chess.crt:/etc/ssl/cert.crt
+      - .ssl/chess-auto-chess.key:/etc/ssl/cert.key
 
   django:
     build:
