@@ -100,6 +100,7 @@ jobs:
             echo "RELEASE_NAME=$RELEASE_NAME" >> .env;
 
             info "Create SSL certificate"
+            mkdir .ssl
             echo "${{ secrets.SSL_CRT }}" >> .ssl/cert.crt;
             echo "${{ secrets.SSL_KEY }}" >> .ssl/cert.key;
 
