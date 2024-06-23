@@ -23,4 +23,4 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf.tpl
 
 EXPOSE 80
 
-CMD /bin/sh -c ". /generate_nginx_conf.sh && nginx -g 'daemon off;'"
+CMD /bin/bash -c ". /generate_nginx_conf.sh && nginx -g 'daemon off;'"
