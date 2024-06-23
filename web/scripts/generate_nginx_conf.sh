@@ -11,15 +11,22 @@ NGINX_CONF_PATH="/etc/nginx/conf.d/default.conf"
 SSL_BLOCK=""
 
 if [ "$NGINX_USE_HTTPS" -eq 1 ]; then
-    SSL_BLOCK=$(cat <<EOF
+    SSL_BLOCK=$(cat <<'EOF'
 listen 443 ssl;
 ssl_certificate /etc/ssl/cert.pem;
 ssl_certificate_key /etc/ssl/cert.key;
+
+# Редирект с http на https
+if ($scheme = http) {
+    return 301 https://$host$request_uri;
+}
 EOF
 )
 fi
 
-# Замена плейсхолдера {{SSL_BLOCK}} на значение переменной SSL_BLOCK
-sed "s|{{SSL_BLOCK}}|$SSL_BLOCK|" $TEMPLATE_PATH > $NGINX_CONF_PATH
+sed -e '/{{SSL_BLOCK}}/ {
+    r /dev/stdin
+    d
+}' $TEMPLATE_PATH <<< "$SSL_BLOCK" > $NGINX_CONF_PATH
 
 echo "Nginx configuration generated with SSL: $NGINX_USE_HTTPS"
