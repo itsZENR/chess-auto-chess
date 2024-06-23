@@ -13,7 +13,7 @@ SSL_BLOCK=""
 if [ "$NGINX_USE_HTTPS" -eq 1 ]; then
     SSL_BLOCK=$(cat <<'EOF'
 listen 443 ssl;
-ssl_certificate /etc/ssl/cert.pem;
+ssl_certificate /etc/ssl/cert.crt;
 ssl_certificate_key /etc/ssl/cert.key;
 
 # Редирект с http на https
