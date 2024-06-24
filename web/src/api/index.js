@@ -7,7 +7,7 @@ const api = axios.create({
     },
 });
 
-const useHttps = process.env.NGINX_USE_HTTPS === '1';
+const useHttps = window.__use_https === '1';
 if (useHttps) {
     api.defaults.baseURL = `https://${window.location.hostname}`;
 } else {
