@@ -7,6 +7,13 @@ const api = axios.create({
     },
 });
 
+const useHttps = process.env.NGINX_USE_HTTPS === '1';
+if (useHttps) {
+    api.defaults.baseURL = `https://${window.location.hostname}`;
+} else {
+    api.defaults.baseURL = `http://${window.location.hostname}`;
+}
+
 api.interceptors.request.use(config => {
     const csrfToken = getCookie('csrftoken');
     if (csrfToken) {
