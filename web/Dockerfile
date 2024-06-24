@@ -21,6 +21,9 @@ COPY --from=node_builder /web/dist/ /var/www/chessautochess5/
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf.tpl
 
+COPY scripts/env.sh /var/www/chessautochess5/scripts/env.sh
+RUN chmod +x /var/www/chessautochess5/scripts/env.sh
+
 EXPOSE 80
 
-CMD /bin/bash -c ". /generate_nginx_conf.sh && nginx -g 'daemon off;'"
+CMD /bin/bash -c ". /var/www/chessautochess5/scripts/env.sh && . /generate_nginx_conf.sh && nginx -g 'daemon off;'"
