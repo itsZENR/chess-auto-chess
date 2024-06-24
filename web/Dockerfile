@@ -14,10 +14,13 @@ RUN yarn run build
 
 FROM nginx
 
+COPY scripts/generate_nginx_conf.sh /generate_nginx_conf.sh
+RUN chmod +x /generate_nginx_conf.sh
+
 COPY --from=node_builder /web/dist/ /var/www/chessautochess5/
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf.tpl
 
 EXPOSE 80
 
-CMD /bin/sh -c "nginx -g 'daemon off;'"
+CMD /bin/bash -c ". /generate_nginx_conf.sh && nginx -g 'daemon off;'"
