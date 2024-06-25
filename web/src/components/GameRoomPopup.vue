@@ -14,25 +14,27 @@
           >
             Ссылка на приглашение:
           </v-card-title>
-          <v-card-actions class="d-flex flex-wrap justify-center">
-            <input
-                ref="urlElement"
-                :value="urlValue"
-                type="text"
-                readonly
-                style="color: grey"
-            >
-            <v-btn
-                @click="copyText()"
-            >
-              <v-icon>mdi-content-copy</v-icon>
-            </v-btn>
+          <v-card-actions class="d-flex flex-column align-center justify-center">
+            <div>
+              <input
+                  ref="urlElement"
+                  :value="urlValue"
+                  type="text"
+                  readonly
+                  style="color: grey"
+              >
+              <v-btn
+                  @click="copyText()"
+              >
+                <v-icon>mdi-content-copy</v-icon>
+              </v-btn>
+            </div>
             <SocialShareButtons/>
-<!--            <v-btn-->
-<!--                class="ms-auto"-->
-<!--                text="Закрыть"-->
-<!--                @click="popupClose"-->
-<!--            ></v-btn>-->
+            <!--            <v-btn-->
+            <!--                class="ms-auto"-->
+            <!--                text="Закрыть"-->
+            <!--                @click="popupClose"-->
+            <!--            ></v-btn>-->
           </v-card-actions>
         </v-card>
       </slot>
