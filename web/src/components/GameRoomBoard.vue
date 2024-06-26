@@ -1,6 +1,6 @@
 <template>
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
-    <div class="d-flex justify-space-between">
+    <div class="d-flex justify-space-between flex-wrap">
       <base-text>
         Игрок {{ !orientation ? "1" : "2" }}
       </base-text>
