@@ -1,15 +1,21 @@
 <template>
   <v-col :cols="$vuetify.display.mdAndUp ? 6 : 12" class="board">
-    <base-text>
-      Игрок {{ !orientation ? "1" : "2" }}
+    <div class="d-flex justify-space-between flex-wrap">
+      <base-text>
+        Игрок {{ !orientation ? "1" : "2" }}
+      </base-text>
       <span
           v-if="playerReady && !gameStart"
           class="text-grey-darken-1"
       >
         ожидаем готовности 2-го игрока...
       </span>
-    </base-text>
-    <div ref="board" class="board"></div>
+    </div>
+    <div
+        ref="board"
+        class="board"
+        :class="{'block-board': gameStart || playerReady}"
+    ></div>
     <base-text>
       Игрок {{ orientation ? "1" : "2" }}
     </base-text>
@@ -119,9 +125,6 @@ watch(allStepsMove.value, () => {
 <style>
 @import '~@/assets/css/chessboard-1.0.0.min.css';
 
-.board {
-  max-width: 500px;
-}
 .chessboard-63f37 {
   display: flex;
   flex-direction: column;
@@ -142,4 +145,30 @@ watch(allStepsMove.value, () => {
   top: 0;
   left: 0;
 }
+
+.block-board {
+  position: relative;
+}
+
+.block-board:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+@media (max-width: 960px) {
+  .board {
+    max-width: 500px;
+  }
+
+  .notation-322f9 {
+    font-size: 8px;
+  }
+}
+
+
 </style>
