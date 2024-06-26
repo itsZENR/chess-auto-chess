@@ -125,12 +125,6 @@ watch(allStepsMove.value, () => {
 <style>
 @import '~@/assets/css/chessboard-1.0.0.min.css';
 
-@media (max-width: 960px) {
-  .board {
-    max-width: 500px;
-  }
-}
-
 .chessboard-63f37 {
   display: flex;
   flex-direction: column;
@@ -165,5 +159,16 @@ watch(allStepsMove.value, () => {
   height: 100%;
   background: transparent;
 }
+
+@media (max-width: 960px) {
+  .board {
+    max-width: 500px;
+  }
+
+  .notation-322f9 {
+    font-size: 8px;
+  }
+}
+
 
 </style>
