@@ -16,7 +16,7 @@
     >
       <v-card
           max-width="500"
-          min-width="300"
+          min-width="260"
           color="green-darken-3 pt-5"
       >
         <v-card-title
