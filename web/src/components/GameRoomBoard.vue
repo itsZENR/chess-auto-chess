@@ -11,7 +11,11 @@
         ожидаем готовности 2-го игрока...
       </span>
     </div>
-    <div ref="board" class="board"></div>
+    <div
+        ref="board"
+        class="board"
+        :class="{'block-board': gameStart || playerReady}"
+    ></div>
     <base-text>
       Игрок {{ orientation ? "1" : "2" }}
     </base-text>
@@ -147,4 +151,19 @@ watch(allStepsMove.value, () => {
   top: 0;
   left: 0;
 }
+
+.block-board {
+  position: relative;
+}
+
+.block-board:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
 </style>
