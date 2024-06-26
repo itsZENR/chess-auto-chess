@@ -122,13 +122,17 @@ watch(allStepsMove.value, () => {
 .board {
   max-width: 500px;
 }
+.chessboard-63f37 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #3e3e3e;
+}
 
 .spare-pieces-7492f {
   display: flex;
   justify-content: center;
   padding: 0 !important;
-  width: calc(100% - 1px);
-  background: #3e3e3e;
 }
 
 .spare-pieces-7492f:first-child, .spare-pieces-7492f img:first-child {
