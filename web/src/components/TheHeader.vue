@@ -1,7 +1,6 @@
 <template>
   <v-app-bar
       scroll-behavior="hide"
-      scroll-threshold="100"
       :elevation="8"
   >
     <v-container class="d-flex">
