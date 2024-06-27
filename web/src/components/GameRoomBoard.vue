@@ -160,11 +160,11 @@ watch(allStepsMove.value, () => {
   background: transparent;
 }
 
-@media (max-width: 960px) {
-  .board {
-    max-width: 500px;
-  }
+.board {
+  max-width: 500px;
+}
 
+@media (max-width: 960px) {
   .notation-322f9 {
     font-size: 8px;
   }

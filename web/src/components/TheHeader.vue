@@ -21,7 +21,7 @@
             <router-link to="/" class="router-link mx-2">Главная</router-link>
           </nav>
           <nav>
-            <router-link to="/about" class="router-link mx-2">О нас</router-link>
+            <router-link to="/about" class="router-link mx-2">О проекте</router-link>
           </nav>
         </v-sheet>
       </v-row>
